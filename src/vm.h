@@ -5,20 +5,37 @@
 extern "C" {
 #endif
 
-#include <stdint.h>
+typedef struct vm_state {
+	int opcode;
+	struct vm_state *next;
+} vm_state_t;
 
-typedef struct vm_value {
-	int32_t value;
-	struct vm_value *next;
-} vm_value_t;
+typedef struct vm_stack {
+	short value;
+	struct vm_stack *next;
+} vm_stack_t;
 
-vm_value_t *vm_value_create(void);
-vm_value_t *vm_value_push(vm_value_t *node, int32_t val);
-int32_t vm_value_pop(vm_value_t *node);
-int32_t vm_value_empty(vm_value_t *node);
-void vm_value_destroy(vm_value_t *node);
+typedef struct vm {
+	char *buf;
+	unsigned int ip;
+	unsigned int is_error;
+	vm_state_t *state;
+	vm_stack_t *stack;
+} vm_t;
 
-void vm_repl(uint8_t *buf);
+vm_state_t *vm_state_create(void);
+vm_state_t *vm_state_insert(vm_state_t *state, int opcode);
+void vm_state_destroy(vm_state_t *state);
+
+vm_stack_t *vm_stack_create(void);
+vm_stack_t *vm_stack_push(vm_stack_t *stack, short value);
+int vm_stack_empty(vm_stack_t *stack);
+short vm_stack_pop(vm_stack_t *stack);
+void vm_stack_destroy(vm_stack_t *stack);
+
+vm_t *vm_init(char *buf);
+void vm_run(vm_t *vm);
+void vm_destroy(vm_t *vm);
 
 #ifdef __cplusplus
 }

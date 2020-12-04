@@ -1,25 +1,21 @@
 #include "src/vm.h"
 
+static char addition[] = {
+	0x01, 0x0a, /* STORE 10 */
+	0x01, 0x14, /* STORE 20 */
+	0x10, /* ADD */
+	0x20, /* DISPLAY */
+};
+
+static void test_addition(void)
+{
+	vm_t *vm = vm_init(addition);
+	vm_run(vm);
+	vm_destroy(vm);
+}
+
 int main(void)
 {
-	/**
-	 * Bytecode representation (see in src/insn.h)
-	 *
-	 * STORE 10
-	 * STORE 20
-	 * LOAD
-	 * LOAD
-	 * ADD_OP
-	 * DISPLAY
-	 * STORE 11
-	 * STORE 11
-	 * LOAD
-	 * LOAD
-	 * MUL_OP
-	 * DISPLAY
-	 *
-	 * ----- EOF -----
-	 */
-	vm_repl("\x01\x31\x30\x01\x32\x30\x02\x02\x10\x20\x01\x31\x31\x01\x31\x31\x02\x02\x12\x20");
+	test_addition();
 	return 0;
 }

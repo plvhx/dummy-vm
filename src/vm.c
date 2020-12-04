@@ -1,119 +1,146 @@
 #include <assert.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
 #include "insn.h"
 #include "vm.h"
 
-vm_value_t *vm_value_create(void)
+vm_state_t *vm_state_create(void)
 {
-	vm_value_t *ret = calloc(1, sizeof(vm_value_t));
+	vm_state_t *ret = calloc(1, sizeof(vm_state_t));
 	assert(ret != NULL);
+
+	ret->opcode = -1;
+	ret->next = NULL;
 	return ret;
 }
 
-void vm_value_destroy(vm_value_t *node)
+vm_state_t *vm_state_insert(vm_state_t *state, int opcode)
 {
-	free(node);
-	return;
-}
-
-vm_value_t *vm_value_push(vm_value_t *node, int32_t val)
-{
-	if (node == NULL) {
+	if (state == NULL) {
 		return NULL;
 	}
 
-	vm_value_t *current = node;
+	vm_state_t *tmp = (vm_state_t *)state;
+	vm_state_t *new;
 
-	vm_value_t *new = vm_value_create();
-	new->value = val;
-	new->next = node->next;
-	node->next = new;
+	while (tmp->next != NULL) {
+		tmp = tmp->next;
+	}
 
-	return node;
+	new = vm_state_create();
+	new->opcode = opcode;
+	new->next = tmp->next;
+	tmp->next = new;
+	return state;
 }
 
-int32_t vm_value_pop(vm_value_t *node)
+void vm_state_destroy(vm_state_t *state)
 {
-	vm_value_t *tmp = node->next;
-	int32_t ret = tmp->value;
+	if (state == NULL) {
+		return;
+	}
 
-	node->next = tmp->next;
-	vm_value_destroy(tmp);
+	vm_state_destroy(state->next);
+	free(state);
+}
 
+vm_stack_t *vm_stack_create(void)
+{
+	vm_stack_t *ret = calloc(1, sizeof(vm_stack_t));
+	assert(ret != NULL);
+
+	ret->value = -1;
+	ret->next = NULL;
 	return ret;
 }
 
-int32_t vm_value_empty(vm_value_t *node)
+vm_stack_t *vm_stack_push(vm_stack_t *stack, short value)
 {
-	return node->next == NULL;
-}
-
-static size_t vm_insn_store(vm_value_t **stack, const char *buf, size_t offset)
-{
-	char *tmp = calloc(64, sizeof(char));
-	int i;
-
-	assert(tmp != NULL);
-
-	for (i = 0; buf[offset + i] >= 0x30 && buf[offset + i] <= 0x39; i++) {
-		tmp[i] = buf[offset + i];
+	if (stack == NULL) {
+		return NULL;
 	}
 
-	vm_value_push(*stack, atoi(tmp));
+	vm_stack_t *new = vm_stack_create();
+	new->next = stack->next;
+	new->value = value;
+	stack->next = new;
+	return stack;
+}
+
+int vm_stack_empty(vm_stack_t *stack)
+{
+	return stack->next == NULL ? 1 : 0;
+}
+
+short vm_stack_pop(vm_stack_t *stack)
+{
+	vm_stack_t *tmp = stack->next;
+	short rval = tmp->value;
+
+	stack->next = stack->next->next == NULL ? NULL : stack->next->next;
 	free(tmp);
 
-	return i + 1;
+	return rval;
 }
 
-void vm_repl(uint8_t *buf)
+void vm_stack_destroy(vm_stack_t *stack)
 {
-	vm_value_t *stack = vm_value_create();
-	size_t off = 0, op_idx = 0;
-	int32_t operand[2] = {0, 0};
-	int32_t ret = 0;
+	free(stack);
+}
 
-	while (buf[off] != '\0') {
-		switch (buf[off]) {
+vm_t *vm_init(char *buf)
+{
+	vm_t *vm = calloc(1, sizeof(vm_t));
+	assert(vm != NULL);
+
+	vm->buf = strdup(buf);
+	vm->ip = -1;
+	vm->is_error = 0;
+	vm->state = vm_state_create();
+	vm->stack = vm_stack_create();
+	return vm;
+}
+
+void vm_run(vm_t *vm)
+{
+	while (vm->buf[++vm->ip] != '\0' && !vm->is_error) {
+		switch (vm->buf[vm->ip]) {
 			case VM_INSN_STORE:
-				off += vm_insn_store(&stack, buf, off + 1);
+				vm_insn_store_op(vm);
 				break;
-			case VM_INSN_LOAD:
-				operand[op_idx++] = vm_value_pop(stack);
-				off++;
+			case VM_INSN_STORE_16:
+				vm_insn_store16_op(vm);
 				break;
 			case VM_INSN_ADD_OP:
-				ret = operand[0] + operand[1];
-				{ off++; op_idx = 0; }
+				vm_insn_add_op(vm);
 				break;
 			case VM_INSN_SUB_OP:
-				ret = operand[0] - operand[1];
-				{ off++; op_idx = 0; }
+				vm_insn_sub_op(vm);
 				break;
 			case VM_INSN_MUL_OP:
-				ret = operand[0] * operand[1];
-				{ off++; op_idx = 0; }
+				vm_insn_mul_op(vm);
 				break;
 			case VM_INSN_DIV_OP:
-				if (!operand[1]) {
-					fprintf(stderr, "Division by zero.\n");
-					goto done;
-				}
-
-				ret = operand[0] / operand[1];
-				{ off++; op_idx = 0; }
+				vm_insn_div_op(vm);
 				break;
 			case VM_INSN_DISPLAY:
-				printf("%f\n", (double)ret);
-				off++;
+				vm_insn_display_op(vm);
 				break;
 			default:
-				fprintf(stderr, "(0x%02x) is an invalid bytecode.\n", buf[off]);
-				goto done;
+				vm_insn_unknown_bytecode_handler(vm);
+				break;
 		}
 	}
+}
 
-done:
-	vm_value_destroy(stack);
-	return;
+void vm_destroy(vm_t *vm)
+{
+	vm_stack_destroy(vm->stack);
+	vm_state_destroy(vm->state);
+
+	vm->ip = -1;
+
+	free(vm->buf);
+	free(vm);
 }
