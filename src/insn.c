@@ -9,8 +9,8 @@ static short vm_insn_read_byte(vm_t *vm)
 
 static short vm_insn_read_word(vm_t *vm)
 {
-	unsigned char msb = (vm->buf[++vm->ip] & 0xff) << 4;
-	unsigned char lsb = (vm->buf[++vm->ip] & 0xff);
+	short msb = (vm->buf[++vm->ip] & 0xff) << 8;
+	short lsb = (vm->buf[++vm->ip] & 0xff);
 	return (msb | lsb);
 }
 
