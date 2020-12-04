@@ -56,6 +56,14 @@ static char subtraction_with_second_16bit_operand[] = {
 	0x00
 };
 
+static char subtraction_with_16bit_operand_both[] = {
+	0x02, 0x05, 0x39, /* STORE16 1337 */
+	0x02, 0x05, 0x78, /* STORE16 1400 */
+	0x11, /* SUB */
+	0x20, /* DISPLAY */
+	0x00
+};
+
 static void test_addition(void)
 {
 	vm_t *vm = vm_init(addition);
@@ -105,6 +113,13 @@ static void test_subtraction_with_second_16bit_operand(void)
 	vm_destroy(vm);
 }
 
+static void test_subtraction_with_16bit_operand_both(void)
+{
+	vm_t *vm = vm_init(subtraction_with_16bit_operand_both);
+	vm_run(vm);
+	vm_destroy(vm);
+}
+
 int main(void)
 {
 	test_addition();
@@ -115,6 +130,7 @@ int main(void)
 	test_subtraction();
 	test_subtraction_with_first_16bit_operand();
 	test_subtraction_with_second_16bit_operand();
+	test_subtraction_with_16bit_operand_both();
 
 	return 0;
 }
