@@ -175,6 +175,18 @@ static char r1_to_r2[] = {
 	0x00
 };
 
+static char r2_to_r2[] = {
+	VM_INSN_MOVB_IMM8_TO_R2, 0x20, /* movb 32, r2 */
+	VM_INSN_MOVB_R2_TO_R2, /* movb r2, r2 */
+	0x00
+};
+
+static char r3_to_r2[] = {
+	VM_INSN_MOVB_IMM8_TO_R3, 0x20, /* movb 32, r3 */
+	VM_INSN_MOVB_R3_TO_R2, /* movb r3, r2 */
+	0x00
+};
+
 static void test_addition(void)
 {
 	vm_t *vm = vm_init(addition);
@@ -414,6 +426,29 @@ static void test_r1_to_r2(void)
 	vm_destroy(vm);
 }
 
+static void test_r2_to_r2(void)
+{
+	vm_t *vm = vm_init(r2_to_r2);
+	vm_run(vm);
+	assert(VM_REGS_GET_GP_R2(vm) == 0x20);
+#ifdef DEBUG
+	printf("r2: %d\n", VM_REGS_GET_GP_R2(vm));
+#endif
+	vm_destroy(vm);
+}
+
+static void test_r3_to_r2(void)
+{
+	vm_t *vm = vm_init(r3_to_r2);
+	vm_run(vm);
+	assert(VM_REGS_GET_GP_R3(vm) == 0x20);
+	assert(VM_REGS_GET_GP_R2(vm) == 0x20);
+#ifdef DEBUG
+	printf("r3: %d, r2: %d\n", VM_REGS_GET_GP_R3(vm), VM_REGS_GET_GP_R2(vm));
+#endif
+	vm_destroy(vm);
+}
+
 int main(void)
 {
 	test_addition();
@@ -451,6 +486,8 @@ int main(void)
 	// gp reg -> r2
 	test_r0_to_r2();
 	test_r1_to_r2();
+	test_r2_to_r2();
+	test_r3_to_r2();
 
 	return 0;
 }
