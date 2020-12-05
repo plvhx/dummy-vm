@@ -208,6 +208,7 @@ void vm_destroy(vm_t *vm)
 {
 	vm_stack_destroy(vm->stack);
 	vm_state_destroy(vm->state);
+	vm_regs_destroy(vm->regs);
 
 	vm->ip = -1;
 
