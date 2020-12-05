@@ -13,7 +13,7 @@ typedef union vm_gp_regs {
 } vm_gp_regs_t;
 
 typedef struct vm_regs {
-	vm_gp_regs_t gp_regs;
+	vm_gp_regs_t gp;
 } vm_regs_t;
 
 vm_regs_t *vm_regs_init(void);

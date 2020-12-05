@@ -1,3 +1,10 @@
+#include <assert.h>
+
+#ifdef DEBUG
+# include <stdio.h>
+#endif
+
+#include "src/insn.h"
 #include "src/vm.h"
 
 static char addition[] = {
@@ -88,6 +95,32 @@ static char multiplication_with_second_16bit_operand[] = {
 	0x00
 };
 
+static char imm8_to_r0[] = {
+	VM_INSN_MOVB_IMM8_TO_R0, 0x20, /* movb 32, r0 */
+	0x00
+};
+
+static char imm8_to_r1[] = {
+	VM_INSN_MOVB_IMM8_TO_R1, 0x20, /* movb 32, r1 */
+	0x00
+};
+
+static char imm8_to_r2[] = {
+	VM_INSN_MOVB_IMM8_TO_R2, 0x20, /* movb 32, r2 */
+	0x00
+};
+
+static char imm8_to_r3[] = {
+	VM_INSN_MOVB_IMM8_TO_R3, 0x20, /* movb 32, r3 */
+	0x00
+};
+
+static char r0_to_r0[] = {
+	VM_INSN_MOVB_IMM8_TO_R0, 0x20, /* movb 32, r0 */
+	VM_INSN_MOVB_R0_TO_R0, /* movb r0, r0 */
+	0x00
+};
+
 static void test_addition(void)
 {
 	vm_t *vm = vm_init(addition);
@@ -165,6 +198,61 @@ static void test_multiplication_with_second_16bit_operand(void)
 	vm_destroy(vm);
 }
 
+static void test_imm8_to_r0(void)
+{
+	vm_t *vm = vm_init(imm8_to_r0);
+	vm_run(vm);
+	assert(vm->regs->gp.r0 == 0x20);
+#ifdef DEBUG
+	printf("r0: %d\n", vm->regs->gp.r0);
+#endif
+	vm_destroy(vm);
+}
+
+static void test_imm8_to_r1(void)
+{
+	vm_t *vm = vm_init(imm8_to_r1);
+	vm_run(vm);
+	assert(vm->regs->gp.r1 == 0x20);
+#ifdef DEBUG
+	printf("r1: %d\n", vm->regs->gp.r1);
+#endif
+	vm_destroy(vm);
+}
+
+static void test_imm8_to_r2(void)
+{
+	vm_t *vm = vm_init(imm8_to_r2);
+	vm_run(vm);
+	assert(vm->regs->gp.r2 == 0x20);
+#ifdef DEBUG
+	printf("r2: %d\n", vm->regs->gp.r2);
+#endif
+	vm_destroy(vm);
+}
+
+static void test_imm8_to_r3(void)
+{
+	vm_t *vm = vm_init(imm8_to_r3);
+	vm_run(vm);
+	assert(vm->regs->gp.r3 == 0x20);
+#ifdef DEBUG
+	printf("r3: %d\n", vm->regs->gp.r3);
+#endif
+	vm_destroy(vm);
+}
+
+static void test_r0_to_r0(void)
+{
+	vm_t *vm = vm_init(r0_to_r0);
+	vm_run(vm);
+	assert(vm->regs->gp.r0 == 0x20);
+#ifdef DEBUG
+	printf("r0: %d\n", vm->regs->gp.r0);
+#endif
+	vm_destroy(vm);
+}
+
 int main(void)
 {
 	test_addition();
@@ -180,6 +268,15 @@ int main(void)
 	test_multiplication();
 	test_multiplication_with_first_16bit_operand();
 	test_multiplication_with_second_16bit_operand();
+
+	// imm8 -> gp reg.
+	test_imm8_to_r0();
+	test_imm8_to_r1();
+	test_imm8_to_r2();
+	test_imm8_to_r3();
+
+	// gp reg -> r0
+	test_r0_to_r0();
 
 	return 0;
 }

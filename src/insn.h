@@ -8,6 +8,31 @@ extern "C" {
 #include "vm.h"
 
 typedef enum vm_insn {
+	VM_INSN_MOVB_IMM8_TO_R0 = 0x90,
+	VM_INSN_MOVB_IMM8_TO_R1,
+	VM_INSN_MOVB_IMM8_TO_R2,
+	VM_INSN_MOVB_IMM8_TO_R3,
+
+	VM_INSN_MOVB_R0_TO_R0 = 0xa0,
+	VM_INSN_MOVB_R1_TO_R0,
+	VM_INSN_MOVB_R2_TO_R0,
+	VM_INSN_MOVB_R3_TO_R0,
+
+	VM_INSN_MOVB_R0_TO_R1 = 0xb0,
+	VM_INSN_MOVB_R1_TO_R1,
+	VM_INSN_MOVB_R2_TO_R1,
+	VM_INSN_MOVB_R3_TO_R1,
+
+	VM_INSN_MOVB_R0_TO_R2 = 0xc0,
+	VM_INSN_MOVB_R1_TO_R2,
+	VM_INSN_MOVB_R2_TO_R2,
+	VM_INSN_MOVB_R3_TO_R2,
+
+	VM_INSN_MOVB_R0_TO_R3 = 0xd0,
+	VM_INSN_MOVB_R1_TO_R3,
+	VM_INSN_MOVB_R2_TO_R3,
+	VM_INSN_MOVB_R3_TO_R3,
+
 	VM_INSN_STORE = 0x01,
 	VM_INSN_STORE_16,
 
@@ -19,8 +44,34 @@ typedef enum vm_insn {
 	VM_INSN_DISPLAY = 0x20,
 } vm_insn_t;
 
+void vm_insn_movb_imm8_to_r0(vm_t *vm);
+void vm_insn_movb_imm8_to_r1(vm_t *vm);
+void vm_insn_movb_imm8_to_r2(vm_t *vm);
+void vm_insn_movb_imm8_to_r3(vm_t *vm);
+
+void vm_insn_movb_r0_to_r0(vm_t *vm);
+void vm_insn_movb_r1_to_r0(vm_t *vm);
+void vm_insn_movb_r2_to_r0(vm_t *vm);
+void vm_insn_movb_r3_to_r0(vm_t *vm);
+
+void vm_insn_movb_r0_to_r1(vm_t *vm);
+void vm_insn_movb_r1_to_r1(vm_t *vm);
+void vm_insn_movb_r2_to_r1(vm_t *vm);
+void vm_insn_movb_r3_to_r1(vm_t *vm);
+
+void vm_insn_movb_r0_to_r2(vm_t *vm);
+void vm_insn_movb_r1_to_r2(vm_t *vm);
+void vm_insn_movb_r2_to_r2(vm_t *vm);
+void vm_insn_movb_r3_to_r2(vm_t *vm);
+
+void vm_insn_movb_r0_to_r3(vm_t *vm);
+void vm_insn_movb_r1_to_r3(vm_t *vm);
+void vm_insn_movb_r2_to_r3(vm_t *vm);
+void vm_insn_movb_r3_to_r3(vm_t *vm);
+
 void vm_insn_store_op(vm_t *vm);
 void vm_insn_store16_op(vm_t *vm);
+
 void vm_insn_add_op(vm_t *vm);
 void vm_insn_sub_op(vm_t *vm);
 void vm_insn_mul_op(vm_t *vm);

@@ -55,7 +55,7 @@ vm_stack_t *vm_stack_create(void)
 	return ret;
 }
 
-vm_stack_t *vm_stack_push(vm_stack_t *stack, short value)
+vm_stack_t *vm_stack_push(vm_stack_t *stack, unsigned short value)
 {
 	if (stack == NULL) {
 		return NULL;
@@ -73,7 +73,7 @@ int vm_stack_empty(vm_stack_t *stack)
 	return stack->next == NULL ? 1 : 0;
 }
 
-short vm_stack_pop(vm_stack_t *stack)
+unsigned short vm_stack_pop(vm_stack_t *stack)
 {
 	vm_stack_t *tmp = stack->next;
 	short rval = tmp->value;
@@ -97,6 +97,7 @@ vm_t *vm_init(char *buf)
 	vm->buf = strdup(buf);
 	vm->ip = -1;
 	vm->is_error = 0;
+	vm->regs = vm_regs_init();
 	vm->state = vm_state_create();
 	vm->stack = vm_stack_create();
 	return vm;
@@ -106,6 +107,75 @@ void vm_run(vm_t *vm)
 {
 	while (vm->buf[++vm->ip] != '\0' && !vm->is_error) {
 		switch (vm->buf[vm->ip]) {
+			// move imm8 to general-purpose register.
+			case VM_INSN_MOVB_IMM8_TO_R0:
+				vm_insn_movb_imm8_to_r0(vm);
+				break;
+			case VM_INSN_MOVB_IMM8_TO_R1:
+				vm_insn_movb_imm8_to_r1(vm);
+				break;
+			case VM_INSN_MOVB_IMM8_TO_R2:
+				vm_insn_movb_imm8_to_r2(vm);
+				break;
+			case VM_INSN_MOVB_IMM8_TO_R3:
+				vm_insn_movb_imm8_to_r3(vm);
+				break;
+			// move general-purpose register value as
+			// byte value to 'r0' general-purpose register.
+			case VM_INSN_MOVB_R0_TO_R0:
+				vm_insn_movb_r0_to_r0(vm);
+				break;
+			case VM_INSN_MOVB_R1_TO_R0:
+				vm_insn_movb_r1_to_r0(vm);
+				break;
+			case VM_INSN_MOVB_R2_TO_R0:
+				vm_insn_movb_r2_to_r0(vm);
+				break;
+			case VM_INSN_MOVB_R3_TO_R0:
+				vm_insn_movb_r3_to_r0(vm);
+				break;
+			// move general-purpose register value as
+			// byte value to 'r1' general-purpose register.
+			case VM_INSN_MOVB_R0_TO_R1:
+				vm_insn_movb_r0_to_r1(vm);
+				break;
+			case VM_INSN_MOVB_R1_TO_R1:
+				vm_insn_movb_r1_to_r1(vm);
+				break;
+			case VM_INSN_MOVB_R2_TO_R1:
+				vm_insn_movb_r2_to_r1(vm);
+				break;
+			case VM_INSN_MOVB_R3_TO_R1:
+				vm_insn_movb_r3_to_r1(vm);
+				break;
+			// move general-purpose register value as
+			// byte value to 'r2' general-purpose register.
+			case VM_INSN_MOVB_R0_TO_R2:
+				vm_insn_movb_r0_to_r2(vm);
+				break;
+			case VM_INSN_MOVB_R1_TO_R2:
+				vm_insn_movb_r1_to_r2(vm);
+				break;
+			case VM_INSN_MOVB_R2_TO_R2:
+				vm_insn_movb_r2_to_r2(vm);
+				break;
+			case VM_INSN_MOVB_R3_TO_R2:
+				vm_insn_movb_r3_to_r2(vm);
+				break;
+			// move general-purpose register value as
+			// byte value to 'r3' general-purpose register.
+			case VM_INSN_MOVB_R0_TO_R3:
+				vm_insn_movb_r0_to_r3(vm);
+				break;
+			case VM_INSN_MOVB_R1_TO_R3:
+				vm_insn_movb_r1_to_r3(vm);
+				break;
+			case VM_INSN_MOVB_R2_TO_R3:
+				vm_insn_movb_r2_to_r3(vm);
+				break;
+			case VM_INSN_MOVB_R3_TO_R3:
+				vm_insn_movb_r3_to_r3(vm);
+				break;
 			case VM_INSN_STORE:
 				vm_insn_store_op(vm);
 				break;
