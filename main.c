@@ -241,6 +241,16 @@ static char subtraction_imm8_imm8_to_r1[] = {
 	0x00
 };
 
+static char subtraction_imm8_imm8_to_r2[] = {
+	VM_INSN_SUBB_IMM8_IMM8_TO_R2, 0x0a, 0x14, /* subb r2, 10, 20 */
+	0x00
+};
+
+static char subtraction_imm8_imm8_to_r3[] = {
+	VM_INSN_SUBB_IMM8_IMM8_TO_R3, 0x0a, 0x14, /* subb r3, 10, 20 */
+	0x00
+};
+
 static void test_addition(void)
 {
 	vm_t *vm = vm_init(addition);
@@ -616,6 +626,28 @@ static void test_subtraction_imm8_imm8_to_r1(void)
 	vm_destroy(vm);
 }
 
+static void test_subtraction_imm8_imm8_to_r2(void)
+{
+	vm_t *vm = vm_init(subtraction_imm8_imm8_to_r2);
+	vm_run(vm);
+	assert(VM_REGS_GET_GP_R2(vm) == -10);
+#ifdef DEBUG
+	printf("r2: %d\n", VM_REGS_GET_GP_R2(vm));
+#endif
+	vm_destroy(vm);
+}
+
+static void test_subtraction_imm8_imm8_to_r3(void)
+{
+	vm_t *vm = vm_init(subtraction_imm8_imm8_to_r3);
+	vm_run(vm);
+	assert(VM_REGS_GET_GP_R3(vm) == -10);
+#ifdef DEBUG
+	printf("r3: %d\n", VM_REGS_GET_GP_R3(vm));
+#endif
+	vm_destroy(vm);
+}
+
 int main(void)
 {
 	test_addition();
@@ -671,6 +703,8 @@ int main(void)
 	// gp reg -> imm8 - imm8
 	test_subtraction_imm8_imm8_to_r0();
 	test_subtraction_imm8_imm8_to_r1();
+	test_subtraction_imm8_imm8_to_r2();
+	test_subtraction_imm8_imm8_to_r3();
 
 	return 0;
 }
