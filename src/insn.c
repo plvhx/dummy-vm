@@ -136,6 +136,30 @@ void vm_insn_movb_r3_to_r3(vm_t *vm)
 	vm->regs->gp.r3 = VM_ALIGN_TO_BYTE(vm->regs->gp.r3);
 }
 
+void vm_insn_addb_imm8_imm8_to_r0(vm_t *vm)
+{
+	vm->state = vm_state_insert(vm->state, VM_INSN_ADDB_IMM8_IMM8_TO_R0);
+	vm->regs->gp.r0 = VM_ALIGN_TO_BYTE(vm_insn_read_byte(vm) + vm_insn_read_byte(vm));
+}
+
+void vm_insn_addb_imm8_imm8_to_r1(vm_t *vm)
+{
+	vm->state = vm_state_insert(vm->state, VM_INSN_ADDB_IMM8_IMM8_TO_R1);
+	vm->regs->gp.r1 = VM_ALIGN_TO_BYTE(vm_insn_read_byte(vm) + vm_insn_read_byte(vm));
+}
+
+void vm_insn_addb_imm8_imm8_to_r2(vm_t *vm)
+{
+	vm->state = vm_state_insert(vm->state, VM_INSN_ADDB_IMM8_IMM8_TO_R2);
+	vm->regs->gp.r2 = VM_ALIGN_TO_BYTE(vm_insn_read_byte(vm) + vm_insn_read_byte(vm));
+}
+
+void vm_insn_addb_imm8_imm8_to_r3(vm_t *vm)
+{
+	vm->state = vm_state_insert(vm->state, VM_INSN_ADDB_IMM8_IMM8_TO_R3);
+	vm->regs->gp.r3 = VM_ALIGN_TO_BYTE(vm_insn_read_byte(vm) + vm_insn_read_byte(vm));
+}
+
 void vm_insn_store_op(vm_t *vm)
 {
 	vm->state = vm_state_insert(vm->state, VM_INSN_STORE);
