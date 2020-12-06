@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include "insn.h"
+#include "util.h"
 #include "vm.h"
-
-#define VM_ALIGN_TO_BYTE(val)	((val) & 0xff)
 
 static unsigned short vm_insn_read_byte(vm_t *vm)
 {
@@ -158,6 +157,50 @@ void vm_insn_addb_imm8_imm8_to_r3(vm_t *vm)
 {
 	vm->state = vm_state_insert(vm->state, VM_INSN_ADDB_IMM8_IMM8_TO_R3);
 	vm->regs->gp.r3 = VM_ALIGN_TO_BYTE(vm_insn_read_byte(vm) + vm_insn_read_byte(vm));
+}
+
+void vm_insn_subb_imm8_imm8_to_r0(vm_t *vm)
+{
+	vm->state = vm_state_insert(vm->state, VM_INSN_SUBB_IMM8_IMM8_TO_R0);
+
+	unsigned short op1 = vm_insn_read_byte(vm);
+	unsigned short op2 = vm_insn_read_byte(vm);
+
+	vm->regs->stat.is_negated = op1 < op2 ? 1 : 0;
+	vm->regs->gp.r0 = VM_ALIGN_TO_BYTE(op1 - op2);
+}
+
+void vm_insn_subb_imm8_imm8_to_r1(vm_t *vm)
+{
+	vm->state = vm_state_insert(vm->state, VM_INSN_SUBB_IMM8_IMM8_TO_R1);
+
+	unsigned short op1 = vm_insn_read_byte(vm);
+	unsigned short op2 = vm_insn_read_byte(vm);
+
+	vm->regs->stat.is_negated = op1 < op2 ? 1 : 0;
+	vm->regs->gp.r1 = VM_ALIGN_TO_BYTE(op1 - op2);
+}
+
+void vm_insn_subb_imm8_imm8_to_r2(vm_t *vm)
+{
+	vm->state = vm_state_insert(vm->state, VM_INSN_SUBB_IMM8_IMM8_TO_R2);
+
+	unsigned short op1 = vm_insn_read_byte(vm);
+	unsigned short op2 = vm_insn_read_byte(vm);
+
+	vm->regs->stat.is_negated = op1 < op2 ? 1 : 0;
+	vm->regs->gp.r2 = VM_ALIGN_TO_BYTE(op1 - op2);
+}
+
+void vm_insn_subb_imm8_imm8_to_r3(vm_t *vm)
+{
+	vm->state = vm_state_insert(vm->state, VM_INSN_SUBB_IMM8_IMM8_TO_R3);
+
+	unsigned short op1 = vm_insn_read_byte(vm);
+	unsigned short op2 = vm_insn_read_byte(vm);
+
+	vm->regs->stat.is_negated = op1 < op2 ? 1 : 0;
+	vm->regs->gp.r3 = VM_ALIGN_TO_BYTE(op1 - op2);
 }
 
 void vm_insn_store_op(vm_t *vm)
