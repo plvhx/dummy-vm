@@ -251,6 +251,11 @@ static char subtraction_imm8_imm8_to_r3[] = {
 	0x00
 };
 
+static char multiplication_imm8_imm8_to_r0[] = {
+	VM_INSN_MULB_IMM8_IMM8_TO_R0, 0x0a, 0x14, /* mulb r0, 10, 20 */
+	0x00
+};
+
 static void test_addition(void)
 {
 	vm_t *vm = vm_init(addition);
@@ -648,6 +653,17 @@ static void test_subtraction_imm8_imm8_to_r3(void)
 	vm_destroy(vm);
 }
 
+static void test_multiplication_imm8_imm8_to_r0(void)
+{
+	vm_t *vm = vm_init(multiplication_imm8_imm8_to_r0);
+	vm_run(vm);
+	assert(VM_REGS_GET_GP_R0(vm) == 200);
+#ifdef DEBUG
+	printf("r0: %d\n", VM_REGS_GET_GP_R0(vm));
+#endif
+	vm_destroy(vm);
+}
+
 int main(void)
 {
 	test_addition();
@@ -705,6 +721,9 @@ int main(void)
 	test_subtraction_imm8_imm8_to_r1();
 	test_subtraction_imm8_imm8_to_r2();
 	test_subtraction_imm8_imm8_to_r3();
+
+	// gp reg -> imm8 * imm8
+	test_multiplication_imm8_imm8_to_r0();
 
 	return 0;
 }

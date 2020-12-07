@@ -204,6 +204,20 @@ void vm_run(vm_t *vm)
 			case VM_INSN_SUBB_IMM8_IMM8_TO_R3:
 				vm_insn_subb_imm8_imm8_to_r3(vm);
 				break;
+			// multiply imm8, imm8 and store its result to
+			// general-purpose register.
+			case VM_INSN_MULB_IMM8_IMM8_TO_R0:
+				vm_insn_mulb_imm8_imm8_to_r0(vm);
+				break;
+			case VM_INSN_MULB_IMM8_IMM8_TO_R1:
+				vm_insn_mulb_imm8_imm8_to_r1(vm);
+				break;
+			case VM_INSN_MULB_IMM8_IMM8_TO_R2:
+				vm_insn_mulb_imm8_imm8_to_r2(vm);
+				break;
+			case VM_INSN_MULB_IMM8_IMM8_TO_R3:
+				vm_insn_mulb_imm8_imm8_to_r3(vm);
+				break;
 			case VM_INSN_STORE:
 				vm_insn_store_op(vm);
 				break;
