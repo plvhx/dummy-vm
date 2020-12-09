@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 #include "regs.h"
+#include "value.h"
 
 typedef struct vm_state {
 	int opcode;
@@ -13,7 +14,7 @@ typedef struct vm_state {
 } vm_state_t;
 
 typedef struct vm_stack {
-	unsigned short value;
+	vm_value_t *value;
 	struct vm_stack *next;
 } vm_stack_t;
 
