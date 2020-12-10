@@ -1,10 +1,11 @@
 %{
 
-#include "./src/global.h"
+#include "ast.h"
+#include "global.h"
 
+extern FILE *yyin;
 extern int yyparse(void);
 extern int yylex(void);
-extern FILE * yyin;
 
 void yyerror(const char *str)
 {
@@ -55,9 +56,18 @@ top_statement:
 
 complete_insn:
 	  mnemonic register TOKEN_COMMA param
-	  	{ $$ = vm_ast_create_multi_ex_call(VM_AST_INSTRUCTION_LINE, $1, $2, $4); }
-	| mnemonic register TOKEN_COMMA param TOKEN_COMMA param
-		{ $$ = vm_ast_create_multi_ex_call(VM_AST_INSTRUCTION_LINE, $1, $2, $4, $6); }
+	  	{
+	  		$$ = vm_ast_create_multi_ex_call(
+	  			VM_AST_INSTRUCTION_LINE,
+	  			NULL,
+	  			$1,
+	  			$2,
+	  			$4,
+	  			NULL
+	  		);
+	  	}
+	| complete_insn TOKEN_COMMA param
+		{ $$ = vm_ast_add_child($1, $3); }
 	;
 
 integer_value:
@@ -82,3 +92,20 @@ param:
 		{ $$ = $1; }
 	;
 %%
+
+static void vm_compilation_visitor_callback(FILE *file, int opcode)
+{
+	fputc(opcode, file);
+}
+
+int main(void)
+{
+	yyin = fopen("sample.dasm", "r");
+	yyparse();
+
+	FILE *out = fopen("sample.com", "w");
+	vm_ast_traverse(VM_CG(ast), out, vm_compilation_visitor_callback);
+	fclose(out);
+
+	return 0;
+}

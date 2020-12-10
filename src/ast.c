@@ -96,31 +96,69 @@ static void vm_ast_process_instruction_line(vm_ast_t *ast, FILE *file, void (*vi
 {
 	assert(ast->childs[0]->kind_type == VM_AST_MNEMONIC && ast->childs[1]->kind_type == VM_AST_REGISTER);
 
-	// process 'movb' imm8 to general-purpose regs
+	unsigned int is_negated;
+	unsigned int skipped_index;
+
+	// process 'movb' imm8 to r0
 	if (!strcasecmp((char *)ast->childs[0]->mnemonic.name, "movb") &&
 		!strcasecmp((char *)ast->childs[1]->regs.name, "r0") &&
 		ast->childs[2]->kind_type == VM_AST_INTEGER_VALUE) {
+		is_negated    = ast->childs[2]->number.val[0] == '-' ? 0xff : 0xfa;
+		skipped_index = 3;
+
 		visitor(file, VM_INSN_MOVB_IMM8_TO_R0);
-		visitor(file, ast->childs[2]->number.val[0] == '-' ? 0xff : 0xfa);
-		visitor(file, atoi((char *)ast->childs[2]->number.val + 1));
+		visitor(file, is_negated);
+		visitor(
+			file,
+			is_negated == 0xfa
+				? atoi((char *)ast->childs[2]->number.val)
+				: atoi((char *)ast->childs[2]->number.val + 1)
+		);
+	// process 'movb' imm8 to r1
 	} else if (!strcasecmp((char *)ast->childs[0]->mnemonic.name, "movb") &&
 		!strcasecmp((char *)ast->childs[1]->regs.name, "r1") &&
 		ast->childs[2]->kind_type == VM_AST_INTEGER_VALUE) {
+		is_negated    = ast->childs[2]->number.val[0] == '-' ? 0xff : 0xfa;
+		skipped_index = 3;
+
 		visitor(file, VM_INSN_MOVB_IMM8_TO_R1);
-		visitor(file, ast->childs[2]->number.val[0] == '-' ? 0xff : 0xfa);
-		visitor(file, atoi((char *)ast->childs[2]->number.val + 1));
+		visitor(file, is_negated);
+		visitor(
+			file,
+			is_negated == 0xfa
+				? atoi((char *)ast->childs[2]->number.val)
+				: atoi((char *)ast->childs[2]->number->val + 1)
+		);
+	// process 'movb' imm8 to r2
 	} else if (!strcasecmp((char *)ast->childs[0]->mnemonic.name, "movb") &&
 		!strcasecmp((char *)ast->childs[1]->regs.name, "r2") &&
 		ast->childs[2]->kind_type == VM_AST_INTEGER_VALUE) {
+		is_negated    = ast->childs[2]->number.val[0] == '-' ? 0xff : 0xfa;
+		skipped_index = 3;
+
 		visitor(file, VM_INSN_MOVB_IMM8_TO_R2);
-		visitor(file, ast->childs[2]->number.val[0] == '-' ? 0xff : 0xfa);
-		visitor(file, atoi((char *)ast->childs[2]->number.val + 1));
+		visitor(file, is_negated);
+		visitor(
+			file,
+			is_negated == 0xfa
+				? atoi((char *)ast->childs[2]->number.val)
+				: atoi((char *)ast->childs[2]->number.val + 1)
+		);
+	// process 'movb' imm8 to r3
 	} else if (!strcasecmp((char *)ast->childs[0]->mnemonic.name, "movb") &&
 		!strcasecmp((char *)ast->childs[1]->regs.name, "r3") &&
 		ast->childs[2]->kind_type == VM_AST_INTEGER_VALUE) {
+		is_negated    = ast->childs[2]->number.val[0] == '-' ? 0xff : 0xfa;
+		skipped_index = 3;
+
 		visitor(file, VM_INSN_MOVB_IMM8_TO_R3);
-		visitor(file, ast->childs[2]->number.val[0] == '-' ? 0xff : 0xfa);
-		visitor(file, atoi((char *)ast->childs[2]->number.val + 1));
+		visitor(file, is_negated);
+		visitor(
+			file,
+			is_negated == 0xfa
+				? atoi((char *)ast->childs[2]->number.val)
+				: atoi((char *)ast->childs[2]->number.val + 1)
+		);
 	}
 }
 
@@ -130,13 +168,11 @@ void vm_ast_traverse(vm_ast_t *ast, FILE *file, void (*visitor)(FILE *file, int 
 		return;
 	}
 
-	int i;
-
 	if (ast->kind_type == VM_AST_INSTRUCTION_LINE) {
 		vm_ast_process_instruction_line(ast, file, visitor);
 	}
 
-	for (i = 0; i < ast->num_childs; i++) {
+	for (int i = 0; i < ast->num_childs; i++) {
 		vm_ast_traverse(ast->childs[i], file, visitor);
 	}
 }

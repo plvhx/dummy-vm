@@ -1,31 +1,37 @@
 %{
+
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "ast.h"
-#include "vm_langspec_parser.h"
+#include "vm_langspec_parser.tab.h"
 
 static char *vm_lex_alloc_strbuf(const char *buf);
+static int vm_lex_is_register(const char *buf);
+
 %}
 
 INTEGER		[-+]?[0-9]+
-REGISTER 	(r0|R0|r1|R1|r2|R2|r2|R3)
-MNEMONIC	[a-zA-Z][a-zA-Z0-9]*
+STRING 		[a-zA-Z][a-zA-Z0-9]*
 
 %%
 
 {INTEGER}	{ yylval.buf = vm_lex_alloc_strbuf(yytext); return TOKEN_INTEGER; }
-{REGISTER}	{ yylval.buf = vm_lex_alloc_strbuf(yytext); return TOKEN_REGISTER; }
-{MNEMONIC}	{ yylval.buf = vm_lex_alloc_strbuf(yytext); return TOKEN_MNEMONIC; }
+{STRING}	{
+	yylval.buf = vm_lex_alloc_strbuf(yytext);
+	return !vm_lex_is_register(yylval.buf) ? TOKEN_MNEMONIC : TOKEN_REGISTER;
+}
 ","			{ return TOKEN_COMMA; }
+[ \t\r]+	;
+[\n]+		;
 
 %%
 
 static char *vm_lex_alloc_strbuf(const char *buf)
 {
 	int i;
-	char *rbuf = calloc(strlen(buf), sizeof(char));
+	char *rbuf = calloc(strlen(buf) + 1, sizeof(char));
 
 	assert(rbuf != NULL);
 
@@ -34,4 +40,16 @@ static char *vm_lex_alloc_strbuf(const char *buf)
 	}
 
 	return rbuf;
+}
+
+static int vm_lex_is_register(const char *buf)
+{
+	if (!strcasecmp(buf, "r0") ||
+		!strcasecmp(buf, "r1") ||
+		!strcasecmp(buf, "r2") ||
+		!strcasecmp(buf, "r3")) {
+		return 1;
+	}
+
+	return 0;
 }
