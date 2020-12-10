@@ -73,6 +73,13 @@ typedef struct vm_ast {
 #define vm_ast_create_multi_ex_call(a, b, ...) \
 	VM_AST_VARIADIC_CALL_SPEC(vm_ast_create_multi_ex, a, b, __VA_ARGS__)
 
+#define VM_AST_GET_KIND_TYPE(ast)	((ast)->kind_type)
+#define VM_AST_GET_REGS_NAME(ast)	((ast)->regs.name)
+#define VM_AST_GET_MNEMONIC_NAME(ast)	((ast)->mnemonic.name)
+#define VM_AST_GET_NUMBER_VAL(ast)		((ast)->number.val)
+#define VM_AST_GET_NUM_CHILDS(ast)		((ast)->num_childs)
+#define VM_AST_GET_NUM_CHILDS_ALLOC_SIZE	((ast)->num_childs_alloc_size)
+
 vm_ast_t *vm_ast_create(unsigned short kind_type, const void *ast_value);
 vm_ast_t *vm_ast_create_multi_ex(unsigned short kind_type, const void *ast_value, ...);
 vm_ast_t *vm_ast_add_child(vm_ast_t *ast, vm_ast_t *child);

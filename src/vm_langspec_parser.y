@@ -66,8 +66,18 @@ complete_insn:
 	  			NULL
 	  		);
 	  	}
-	| complete_insn TOKEN_COMMA param
-		{ $$ = vm_ast_add_child($1, $3); }
+	| mnemonic register TOKEN_COMMA param TOKEN_COMMA param
+		{
+			$$ = vm_ast_create_multi_ex_call(
+				VM_AST_INSTRUCTION_LINE,
+				NULL,
+				$1,
+				$2,
+				$4,
+				$6,
+				NULL
+			);
+		}
 	;
 
 integer_value:

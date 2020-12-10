@@ -5,7 +5,7 @@
 
 static unsigned short vm_insn_read_byte(vm_t *vm)
 {
-	return (short)(vm->buf[++vm->ip] & 0xff);
+	return (unsigned short)(vm->buf[++vm->ip] & 0xff);
 }
 
 static unsigned short vm_insn_read_word(vm_t *vm)
@@ -18,24 +18,28 @@ static unsigned short vm_insn_read_word(vm_t *vm)
 void vm_insn_movb_imm8_to_r0(vm_t *vm)
 {
 	vm->state = vm_state_insert(vm->state, VM_INSN_MOVB_IMM8_TO_R0);
+	vm->regs->stat.is_negated = vm_insn_read_byte(vm) == 0xff ? 1 : 0;
 	vm->regs->gp.r0 = vm_insn_read_byte(vm);
 }
 
 void vm_insn_movb_imm8_to_r1(vm_t *vm)
 {
 	vm->state = vm_state_insert(vm->state, VM_INSN_MOVB_IMM8_TO_R1);
+	vm->regs->stat.is_negated = vm_insn_read_byte(vm) == 0xff ? 1 : 0;
 	vm->regs->gp.r1 = vm_insn_read_byte(vm);
 }
 
 void vm_insn_movb_imm8_to_r2(vm_t *vm)
 {
 	vm->state = vm_state_insert(vm->state, VM_INSN_MOVB_IMM8_TO_R2);
+	vm->regs->stat.is_negated = vm_insn_read_byte(vm) == 0xff ? 1 : 0;
 	vm->regs->gp.r2 = vm_insn_read_byte(vm);
 }
 
 void vm_insn_movb_imm8_to_r3(vm_t *vm)
 {
 	vm->state = vm_state_insert(vm->state, VM_INSN_MOVB_IMM8_TO_R3);
+	vm->regs->stat.is_negated = vm_insn_read_byte(vm) == 0xff ? 1 : 0;
 	vm->regs->gp.r3 = vm_insn_read_byte(vm);
 }
 

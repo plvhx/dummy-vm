@@ -92,73 +92,305 @@ vm_ast_t *vm_ast_add_child(vm_ast_t *ast, vm_ast_t *child)
 	return ast;
 }
 
+static void vm_ast_process_ternary_addb_imm8_imm8_instruction(
+	vm_ast_t *ast,
+	FILE *file,
+	void (*visitor)(FILE *file, int opcode)
+) {
+	if (VM_AST_GET_NUM_CHILDS(ast) != 4) {
+		return;
+	}
+
+	unsigned int is_negated;
+
+	if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r0")) {
+		visitor(file, VM_INSN_ADDB_IMM8_IMM8_TO_R0);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r1")) {
+		visitor(file, VM_INSN_ADDB_IMM8_IMM8_TO_R1);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r2")) {
+		visitor(file, VM_INSN_ADDB_IMM8_IMM8_TO_R2);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r3")) {
+		visitor(file, VM_INSN_ADDB_IMM8_IMM8_TO_R3);
+	}
+
+	is_negated = VM_AST_GET_NUMBER_VAL(ast->childs[2])[0] == '-'
+		? 0xff
+		: 0xfa;
+
+	visitor(file, is_negated);
+	visitor(
+		file,
+		is_negated == 0xfa
+			? atoi((char *)VM_AST_GET_NUMBER_VAL(ast->childs[2]))
+			: atoi((char *)VM_AST_GET_NUMBER_VAL(ast->childs[2]) + 1)
+	);
+
+	is_negated = VM_AST_GET_NUMBER_VAL(ast->childs[3])[0] == '-'
+		? 0xff
+		: 0xfa;
+
+	visitor(file, is_negated);
+	visitor(
+		file,
+		is_negated == 0xfa
+			? atoi((char *)VM_AST_GET_NUMBER_VAL(ast->childs[3]))
+			: atoi((char *)VM_AST_GET_NUMBER_VAL(ast->childs[3]) + 1)
+	);
+}
+
+static void vm_ast_process_ternary_subb_imm8_imm8_instruction(
+	vm_ast_t *ast,
+	FILE *file,
+	void (*visitor)(FILE *file, int opcode)
+) {
+	if (VM_AST_GET_NUM_CHILDS(ast) != 4) {
+		return;
+	}
+
+	unsigned int is_negated;
+
+	if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r0")) {
+		visitor(file, VM_INSN_SUBB_IMM8_IMM8_TO_R0);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r1")) {
+		visitor(file, VM_INSN_SUBB_IMM8_IMM8_TO_R1);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r2")) {
+		visitor(file, VM_INSN_SUBB_IMM8_IMM8_TO_R2);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r3")) {
+		visitor(file, VM_INSN_SUBB_IMM8_IMM8_TO_R3);
+	}
+
+	is_negated = VM_AST_GET_NUMBER_VAL(ast->childs[2])[0] == '-'
+		? 0xff
+		: 0xfa;
+
+	visitor(file, is_negated);
+	visitor(
+		file,
+		is_negated == 0xfa
+			? atoi((char *)VM_AST_GET_NUMBER_VAL(ast->childs[2]))
+			: atoi((char *)VM_AST_GET_NUMBER_VAL(ast->childs[2]) + 1)
+	);
+
+	is_negated = VM_AST_GET_NUMBER_VAL(ast->childs[3])[0] == '-'
+		? 0xff
+		: 0xfa;
+
+	visitor(file, is_negated);
+	visitor(
+		file,
+		is_negated == 0xfa
+			? atoi((char *)VM_AST_GET_NUMBER_VAL(ast->childs[3]))
+			: atoi((char *)VM_AST_GET_NUMBER_VAL(ast->childs[3]) + 1)
+	);
+}
+
+static void vm_ast_process_ternary_mulb_imm8_imm8_instruction(
+	vm_ast_t *ast,
+	FILE *file,
+	void (*visitor)(FILE *file, int opcode)
+) {
+	if (VM_AST_GET_NUM_CHILDS(ast) != 4) {
+		return;
+	}
+
+	unsigned int is_negated;
+
+	if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r0")) {
+		visitor(file, VM_INSN_MULB_IMM8_IMM8_TO_R0);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r1")) {
+		visitor(file, VM_INSN_MULB_IMM8_IMM8_TO_R1);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r2")) {
+		visitor(file, VM_INSN_MULB_IMM8_IMM8_TO_R2);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r3")) {
+		visitor(file, VM_INSN_MULB_IMM8_IMM8_TO_R3);
+	}
+
+	is_negated = VM_AST_GET_NUMBER_VAL(ast->childs[2])[0] == '-'
+		? 0xff
+		: 0xfa;
+
+	visitor(file, is_negated);
+	visitor(
+		file,
+		is_negated == 0xfa
+			? atoi((char *)VM_AST_GET_NUMBER_VAL(ast->childs[2]))
+			: atoi((char *)VM_AST_GET_NUMBER_VAL(ast->childs[2]) + 1)
+	);
+
+	is_negated = VM_AST_GET_NUMBER_VAL(ast->childs[3])[0] == '-'
+		? 0xff
+		: 0xfa;
+
+	visitor(file, is_negated);
+	visitor(
+		file,
+		is_negated == 0xfa
+			? atoi((char *)VM_AST_GET_NUMBER_VAL(ast->childs[3]))
+			: atoi((char *)VM_AST_GET_NUMBER_VAL(ast->childs[3]) + 1)
+	);
+}
+
+static void vm_ast_process_binary_movb_imm8_to_regs_instruction(
+	vm_ast_t *ast,
+	FILE *file,
+	void (*visitor)(FILE *file, int opcode)
+) {
+	if (VM_AST_GET_NUM_CHILDS(ast) != 3) {
+		return;
+	}
+
+	if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r0")) {
+		visitor(file, VM_INSN_MOVB_IMM8_TO_R0);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r1")) {
+		visitor(file, VM_INSN_MOVB_IMM8_TO_R1);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r2")) {
+		visitor(file, VM_INSN_MOVB_IMM8_TO_R2);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r3")) {
+		visitor(file, VM_INSN_MOVB_IMM8_TO_R3);
+	}
+
+	unsigned int is_negated = VM_AST_GET_NUMBER_VAL(ast->childs[2])[0] == '-'
+		? 0xff
+		: 0xfa;
+
+	visitor(file, is_negated);
+	visitor(
+		file,
+		is_negated == 0xfa
+			? atoi((char *)VM_AST_GET_NUMBER_VAL(ast->childs[2]))
+			: atoi((char *)VM_AST_GET_NUMBER_VAL(ast->childs[2]) + 1)
+	);
+}
+
+static void vm_ast_process_binary_movb_regs_to_r0_instruction(
+	vm_ast_t *ast,
+	FILE *file,
+	void (*visitor)(FILE *file, int opcode)
+) {
+	if (VM_AST_GET_NUM_CHILDS(ast) != 3) {
+		return;
+	}
+
+	if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r0")) {
+		visitor(file, VM_INSN_MOVB_R0_TO_R0);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r1")) {
+		visitor(file, VM_INSN_MOVB_R1_TO_R0);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r2")) {
+		visitor(file, VM_INSN_MOVB_R2_TO_R0);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r3")) {
+		visitor(file, VM_INSN_MOVB_R3_TO_R0);
+	}
+}
+
+static void vm_ast_process_binary_movb_regs_to_r1_instruction(
+	vm_ast_t *ast,
+	FILE *file,
+	void (*visitor)(FILE *file, int opcode)
+) {
+	if (VM_AST_GET_NUM_CHILDS(ast) != 3) {
+		return;
+	}
+
+	if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r0")) {
+		visitor(file, VM_INSN_MOVB_R0_TO_R1);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r1")) {
+		visitor(file, VM_INSN_MOVB_R1_TO_R1);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r2")) {
+		visitor(file, VM_INSN_MOVB_R2_TO_R1);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r3")) {
+		visitor(file, VM_INSN_MOVB_R3_TO_R1);
+	}
+}
+
+static void vm_ast_process_binary_movb_regs_to_r2_instruction(
+	vm_ast_t *ast,
+	FILE *file,
+	void (*visitor)(FILE *file, int opcode)
+) {
+	if (VM_AST_GET_NUM_CHILDS(ast) != 3) {
+		return;
+	}
+
+	if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r0")) {
+		visitor(file, VM_INSN_MOVB_R0_TO_R2);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r1")) {
+		visitor(file, VM_INSN_MOVB_R1_TO_R2);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r2")) {
+		visitor(file, VM_INSN_MOVB_R2_TO_R2);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r3")) {
+		visitor(file, VM_INSN_MOVB_R3_TO_R2);
+	}
+}
+
+static void vm_ast_process_binary_movb_regs_to_r3_instruction(
+	vm_ast_t *ast,
+	FILE *file,
+	void (*visitor)(FILE *file, int opcode)
+) {
+	if (VM_AST_GET_NUM_CHILDS(ast) != 3) {
+		return;
+	}
+
+	if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r0")) {
+		visitor(file, VM_INSN_MOVB_R0_TO_R3);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r1")) {
+		visitor(file, VM_INSN_MOVB_R1_TO_R3);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r2")) {
+		visitor(file, VM_INSN_MOVB_R2_TO_R3);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r3")) {
+		visitor(file, VM_INSN_MOVB_R3_TO_R3);
+	}
+}
+
 static void vm_ast_process_instruction_line(vm_ast_t *ast, FILE *file, void (*visitor)(FILE *file, int opcode))
 {
 	assert(ast->childs[0]->kind_type == VM_AST_MNEMONIC && ast->childs[1]->kind_type == VM_AST_REGISTER);
 
 	unsigned int is_negated;
-	unsigned int skipped_index;
+	unsigned int skipped_index = VM_AST_GET_NUM_CHILDS(ast);
 
-	// process 'movb' imm8 to r0
+	if (!strcasecmp((char *)ast->childs[0]->mnemonic.name, "addb") &&
+		ast->childs[1]->kind_type == VM_AST_REGISTER &&
+		ast->childs[2]->kind_type == VM_AST_INTEGER_VALUE &&
+		ast->childs[3]->kind_type == VM_AST_INTEGER_VALUE) {
+		vm_ast_process_ternary_addb_imm8_imm8_instruction(ast, file, visitor);
+	} else if (!strcasecmp((char *)ast->childs[0]->mnemonic.name, "subb") &&
+		ast->childs[1]->kind_type == VM_AST_REGISTER &&
+		ast->childs[2]->kind_type == VM_AST_INTEGER_VALUE &&
+		ast->childs[3]->kind_type == VM_AST_INTEGER_VALUE) {
+		vm_ast_process_ternary_subb_imm8_imm8_instruction(ast, file, visitor);
+	} else if (!strcasecmp((char *)ast->childs[0]->mnemonic.name, "mulb") &&
+		ast->childs[1]->kind_type == VM_AST_REGISTER &&
+		ast->childs[2]->kind_type == VM_AST_INTEGER_VALUE &&
+		ast->childs[3]->kind_type == VM_AST_INTEGER_VALUE) {
+		vm_ast_process_ternary_mulb_imm8_imm8_instruction(ast, file, visitor);
+	}
+
+	// process 'movb' imm8 to general-purpose register
 	if (!strcasecmp((char *)ast->childs[0]->mnemonic.name, "movb") &&
-		!strcasecmp((char *)ast->childs[1]->regs.name, "r0") &&
+		ast->childs[1]->kind_type == VM_AST_REGISTER &&
 		ast->childs[2]->kind_type == VM_AST_INTEGER_VALUE) {
-		is_negated    = ast->childs[2]->number.val[0] == '-' ? 0xff : 0xfa;
-		skipped_index = 3;
-
-		visitor(file, VM_INSN_MOVB_IMM8_TO_R0);
-		visitor(file, is_negated);
-		visitor(
-			file,
-			is_negated == 0xfa
-				? atoi((char *)ast->childs[2]->number.val)
-				: atoi((char *)ast->childs[2]->number.val + 1)
-		);
-	// process 'movb' imm8 to r1
+		vm_ast_process_binary_movb_imm8_to_regs_instruction(ast, file, visitor);
+	// process 'movb' general-purpose register to r0
+	} else if (!strcasecmp((char *)ast->childs[0]->mnemonic.name, "movb") &&
+		!strcasecmp((char *)ast->childs[1]->regs.name, "r0") &&
+		ast->childs[2]->kind_type == VM_AST_REGISTER) {
+		vm_ast_process_binary_movb_regs_to_r0_instruction(ast, file, visitor);
+	// process 'movb' general-purpose register to r1
 	} else if (!strcasecmp((char *)ast->childs[0]->mnemonic.name, "movb") &&
 		!strcasecmp((char *)ast->childs[1]->regs.name, "r1") &&
-		ast->childs[2]->kind_type == VM_AST_INTEGER_VALUE) {
-		is_negated    = ast->childs[2]->number.val[0] == '-' ? 0xff : 0xfa;
-		skipped_index = 3;
-
-		visitor(file, VM_INSN_MOVB_IMM8_TO_R1);
-		visitor(file, is_negated);
-		visitor(
-			file,
-			is_negated == 0xfa
-				? atoi((char *)ast->childs[2]->number.val)
-				: atoi((char *)ast->childs[2]->number->val + 1)
-		);
-	// process 'movb' imm8 to r2
+		ast->childs[2]->kind_type == VM_AST_REGISTER) {
+		vm_ast_process_binary_movb_regs_to_r1_instruction(ast, file, visitor);
+	// process 'movb' general-purpose register to r2
 	} else if (!strcasecmp((char *)ast->childs[0]->mnemonic.name, "movb") &&
 		!strcasecmp((char *)ast->childs[1]->regs.name, "r2") &&
-		ast->childs[2]->kind_type == VM_AST_INTEGER_VALUE) {
-		is_negated    = ast->childs[2]->number.val[0] == '-' ? 0xff : 0xfa;
-		skipped_index = 3;
-
-		visitor(file, VM_INSN_MOVB_IMM8_TO_R2);
-		visitor(file, is_negated);
-		visitor(
-			file,
-			is_negated == 0xfa
-				? atoi((char *)ast->childs[2]->number.val)
-				: atoi((char *)ast->childs[2]->number.val + 1)
-		);
-	// process 'movb' imm8 to r3
+		ast->childs[2]->kind_type == VM_AST_REGISTER) {
+		vm_ast_process_binary_movb_regs_to_r2_instruction(ast, file, visitor);
+	// process 'movb' general-purpose register to r3
 	} else if (!strcasecmp((char *)ast->childs[0]->mnemonic.name, "movb") &&
 		!strcasecmp((char *)ast->childs[1]->regs.name, "r3") &&
-		ast->childs[2]->kind_type == VM_AST_INTEGER_VALUE) {
-		is_negated    = ast->childs[2]->number.val[0] == '-' ? 0xff : 0xfa;
-		skipped_index = 3;
-
-		visitor(file, VM_INSN_MOVB_IMM8_TO_R3);
-		visitor(file, is_negated);
-		visitor(
-			file,
-			is_negated == 0xfa
-				? atoi((char *)ast->childs[2]->number.val)
-				: atoi((char *)ast->childs[2]->number.val + 1)
-		);
+		ast->childs[2]->kind_type == VM_AST_REGISTER) {
+		vm_ast_process_binary_movb_regs_to_r3_instruction(ast, file, visitor);
 	}
 }
 
