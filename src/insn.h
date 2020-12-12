@@ -61,7 +61,11 @@ typedef enum vm_insn {
 	VM_INSN_MUL_OP,
 	VM_INSN_DIV_OP,
 
-	VM_INSN_DISPLAY = 0x20,
+	VM_INSN_PRINT_IMM8 = 0x20,
+	VM_INSN_PRINT_R0,
+	VM_INSN_PRINT_R1,
+	VM_INSN_PRINT_R2,
+	VM_INSN_PRINT_R3
 } vm_insn_t;
 
 void vm_insn_movb_imm8_to_r0(vm_t *vm);
@@ -111,7 +115,13 @@ void vm_insn_add_op(vm_t *vm);
 void vm_insn_sub_op(vm_t *vm);
 void vm_insn_mul_op(vm_t *vm);
 void vm_insn_div_op(vm_t *vm);
-void vm_insn_display_op(vm_t *vm);
+
+void vm_insn_print_imm8(vm_t *vm);
+void vm_insn_print_r0(vm_t *vm);
+void vm_insn_print_r1(vm_t *vm);
+void vm_insn_print_r2(vm_t *vm);
+void vm_insn_print_r3(vm_t *vm);
+
 void vm_insn_unknown_bytecode_handler(vm_t *vm);
 
 #ifdef __cplusplus

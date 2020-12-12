@@ -1,5 +1,9 @@
 %{
 
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+
 #include "ast.h"
 #include "global.h"
 
@@ -55,7 +59,17 @@ top_statement:
 	;
 
 complete_insn:
-	  mnemonic register TOKEN_COMMA param
+	  mnemonic param
+		{
+			$$ = vm_ast_create_multi_ex_call(
+				VM_AST_INSTRUCTION_LINE,
+				NULL,
+				$1,
+				$2,
+				NULL
+			);
+		}
+	| mnemonic register TOKEN_COMMA param
 	  	{
 	  		$$ = vm_ast_create_multi_ex_call(
 	  			VM_AST_INSTRUCTION_LINE,
@@ -103,19 +117,95 @@ param:
 	;
 %%
 
-static void vm_compilation_visitor_callback(FILE *file, int opcode)
+static void vm_ast_compilation_visitor_callback(FILE *file, int opcode)
 {
 	fputc(opcode, file);
 }
 
-int main(void)
+static int vm_ast_ensure_file_extension(const char *file)
 {
-	yyin = fopen("sample.dasm", "r");
+	int i;
+	size_t len = strlen(file);
+
+	for (i = 0; i < len; i++) {
+		if (file[i] == '.') {
+			break;
+		}
+	}
+
+	if (len - (i + 1) != 4) {
+		return 0;
+	}
+
+	if (file[++i] != 'd' ||
+		file[++i] != 'a' ||
+		file[++i] != 's' ||
+		file[++i] != 'm') {
+		return 0;
+	}
+
+	return 1;
+}
+
+static int vm_ast_compile(const char *file)
+{
+	if (!vm_ast_ensure_file_extension(file)) {
+		return 0;
+	}
+
+	yyin = fopen(file, "r");
 	yyparse();
 
-	FILE *out = fopen("sample.com", "w");
-	vm_ast_traverse(VM_CG(ast), out, vm_compilation_visitor_callback);
+	char *ofile = strdup(file);
+	int i;
+
+	for (i = 0; ofile[i] != '\0'; i++) {
+		if (ofile[i] == '.')
+			break;
+	}
+
+	ofile[++i] = 'c';
+	ofile[++i] = 'p';
+	ofile[++i] = 'l';
+	ofile[++i] = 'x';
+
+	FILE *out = fopen(ofile, "w");
+
+	if (out == NULL) {
+		return 0;
+	}
+
+	vm_ast_traverse(
+		VM_CG(ast),
+		out,
+		vm_ast_compilation_visitor_callback
+	);
+
 	fclose(out);
+	free(ofile);
+
+	return 1;
+}
+
+int main(int argc, char **argv)
+{
+	int ret, opt;
+
+	if (argc == 1) {
+		fprintf(stderr, "Usage: %s -c <filename>.dasm\n", argv[0]);
+		return 1;
+	}
+
+	while ((opt = getopt(argc, argv, "c:")) != -1) {
+		switch (opt) {
+			case 'c':
+				ret = vm_ast_compile(optarg);
+				break;
+			default:
+				fprintf(stderr, "Usage: %s -c <filename>.dasm\n", argv[0]);
+				return 1;
+		}
+	}
 
 	return 0;
 }

@@ -20,8 +20,8 @@ typedef struct vm_stack {
 
 typedef struct vm {
 	unsigned char *buf;
-	unsigned int ip;
-	unsigned int is_error;
+	int ip;
+	int is_error;
 	vm_regs_t *regs;
 	vm_state_t *state;
 	vm_stack_t *stack;

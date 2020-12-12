@@ -236,8 +236,20 @@ void vm_run(vm_t *vm)
 			case VM_INSN_DIV_OP:
 				vm_insn_div_op(vm);
 				break;
-			case VM_INSN_DISPLAY:
-				vm_insn_display_op(vm);
+			case VM_INSN_PRINT_IMM8:
+				vm_insn_print_imm8(vm);
+				break;
+			case VM_INSN_PRINT_R0:
+				vm_insn_print_r0(vm);
+				break;
+			case VM_INSN_PRINT_R1:
+				vm_insn_print_r1(vm);
+				break;
+			case VM_INSN_PRINT_R2:
+				vm_insn_print_r2(vm);
+				break;
+			case VM_INSN_PRINT_R3:
+				vm_insn_print_r3(vm);
 				break;
 			default:
 				vm_insn_unknown_bytecode_handler(vm);

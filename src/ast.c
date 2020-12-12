@@ -388,11 +388,52 @@ static void vm_ast_process_binary_movb_regs_to_r3_instruction(
 	}
 }
 
+static void vm_ast_process_unary_print_imm8_instruction(
+	vm_ast_t *ast,
+	FILE *file,
+	void (*visitor)(FILE *file, int opcode)
+) {
+	if (VM_AST_GET_NUM_CHILDS(ast) != 2) {
+		return;
+	}
+
+	visitor(file, VM_INSN_PRINT_IMM8);
+
+	unsigned int is_negated = VM_AST_GET_NUMBER_VAL(ast->childs[1])[0] == '-'
+		? 0xff
+		: 0xfa;
+
+	visitor(file, is_negated);
+	visitor(
+		file,
+		is_negated == 0xfa
+			? atoi((char *)VM_AST_GET_NUMBER_VAL(ast->childs[1]))
+			: atoi((char *)VM_AST_GET_NUMBER_VAL(ast->childs[1]) + 1)
+	);
+}
+
+static void vm_ast_process_unary_print_regs_instruction(
+	vm_ast_t *ast,
+	FILE *file,
+	void (*visitor)(FILE *file, int opcode)
+) {
+	if (VM_AST_GET_NUM_CHILDS(ast) != 2) {
+		return;
+	}
+
+	if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r0")) {
+		visitor(file, VM_INSN_PRINT_R0);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r1")) {
+		visitor(file, VM_INSN_PRINT_R1);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r2")) {
+		visitor(file, VM_INSN_PRINT_R2);
+	} else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r3")) {
+		visitor(file, VM_INSN_PRINT_R3);
+	}
+}
+
 static void vm_ast_process_instruction_line(vm_ast_t *ast, FILE *file, void (*visitor)(FILE *file, int opcode))
 {
-	assert(ast->childs[0]->kind_type == VM_AST_MNEMONIC && ast->childs[1]->kind_type == VM_AST_REGISTER);
-
-	unsigned int is_negated;
 	unsigned int skipped_index = VM_AST_GET_NUM_CHILDS(ast);
 
 	if (!strcasecmp((char *)ast->childs[0]->mnemonic.name, "addb") &&
@@ -442,6 +483,16 @@ static void vm_ast_process_instruction_line(vm_ast_t *ast, FILE *file, void (*vi
 		!strcasecmp((char *)ast->childs[1]->regs.name, "r3") &&
 		ast->childs[2]->kind_type == VM_AST_REGISTER) {
 		vm_ast_process_binary_movb_regs_to_r3_instruction(ast, file, visitor);
+	}
+
+	// process unary 'print' imm8
+	if (!strcasecmp((char *)ast->childs[0]->mnemonic.name, "print") &&
+		ast->childs[1]->kind_type == VM_AST_INTEGER_VALUE) {
+		vm_ast_process_unary_print_imm8_instruction(ast, file, visitor);
+	// process unary 'print' regs
+	} else if (!strcasecmp((char *)ast->childs[0]->mnemonic.name, "print") &&
+		ast->childs[1]->kind_type == VM_AST_REGISTER) {
+		vm_ast_process_unary_print_regs_instruction(ast, file, visitor);
 	}
 }
 
