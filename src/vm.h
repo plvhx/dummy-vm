@@ -22,6 +22,7 @@ typedef struct vm {
 	unsigned char *buf;
 	int ip;
 	int is_error;
+	size_t buflen;
 	vm_regs_t *regs;
 	vm_state_t *state;
 	vm_stack_t *stack;
@@ -37,12 +38,12 @@ vm_state_t *vm_state_insert(vm_state_t *state, int opcode);
 void vm_state_destroy(vm_state_t *state);
 
 vm_stack_t *vm_stack_create(void);
-vm_stack_t *vm_stack_push(vm_stack_t *stack, unsigned short value);
+vm_stack_t *vm_stack_push(vm_stack_t *stack, vm_value_t *value);
 int vm_stack_empty(vm_stack_t *stack);
-unsigned short vm_stack_pop(vm_stack_t *stack);
+vm_value_t *vm_stack_pop(vm_stack_t *stack);
 void vm_stack_destroy(vm_stack_t *stack);
 
-vm_t *vm_init(char *buf);
+vm_t *vm_init(char *buf, size_t len);
 void vm_run(vm_t *vm);
 void vm_destroy(vm_t *vm);
 

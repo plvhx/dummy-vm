@@ -53,14 +53,6 @@ typedef enum vm_insn {
 	VM_INSN_DIVB_IMM8_IMM8_TO_R2,
 	VM_INSN_DIVB_IMM8_IMM8_TO_R3,
 
-	VM_INSN_STORE = 0x01,
-	VM_INSN_STORE_16,
-
-	VM_INSN_ADD_OP = 0x10,
-	VM_INSN_SUB_OP,
-	VM_INSN_MUL_OP,
-	VM_INSN_DIV_OP,
-
 	VM_INSN_PRINT_IMM8 = 0x20,
 	VM_INSN_PRINT_R0,
 	VM_INSN_PRINT_R1,
@@ -107,14 +99,6 @@ void vm_insn_mulb_imm8_imm8_to_r0(vm_t *vm);
 void vm_insn_mulb_imm8_imm8_to_r1(vm_t *vm);
 void vm_insn_mulb_imm8_imm8_to_r2(vm_t *vm);
 void vm_insn_mulb_imm8_imm8_to_r3(vm_t *vm);
-
-void vm_insn_store_op(vm_t *vm);
-void vm_insn_store16_op(vm_t *vm);
-
-void vm_insn_add_op(vm_t *vm);
-void vm_insn_sub_op(vm_t *vm);
-void vm_insn_mul_op(vm_t *vm);
-void vm_insn_div_op(vm_t *vm);
 
 void vm_insn_print_imm8(vm_t *vm);
 void vm_insn_print_r0(vm_t *vm);

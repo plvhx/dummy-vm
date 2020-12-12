@@ -50,12 +50,12 @@ vm_stack_t *vm_stack_create(void)
 	vm_stack_t *ret = calloc(1, sizeof(vm_stack_t));
 	assert(ret != NULL);
 
-	ret->value = -1;
+	ret->value = NULL;
 	ret->next = NULL;
 	return ret;
 }
 
-vm_stack_t *vm_stack_push(vm_stack_t *stack, unsigned short value)
+vm_stack_t *vm_stack_push(vm_stack_t *stack, vm_value_t *value)
 {
 	if (stack == NULL) {
 		return NULL;
@@ -73,10 +73,10 @@ int vm_stack_empty(vm_stack_t *stack)
 	return stack->next == NULL ? 1 : 0;
 }
 
-unsigned short vm_stack_pop(vm_stack_t *stack)
+vm_value_t *vm_stack_pop(vm_stack_t *stack)
 {
 	vm_stack_t *tmp = stack->next;
-	short rval = tmp->value;
+	vm_value_t *rval = tmp->value;
 
 	stack->next = stack->next->next == NULL ? NULL : stack->next->next;
 	free(tmp);
@@ -89,7 +89,7 @@ void vm_stack_destroy(vm_stack_t *stack)
 	free(stack);
 }
 
-vm_t *vm_init(char *buf)
+vm_t *vm_init(char *buf, size_t len)
 {
 	vm_t *vm = calloc(1, sizeof(vm_t));
 	assert(vm != NULL);
@@ -97,6 +97,7 @@ vm_t *vm_init(char *buf)
 	vm->buf = strdup(buf);
 	vm->ip = -1;
 	vm->is_error = 0;
+	vm->buflen = len;
 	vm->regs = vm_regs_init();
 	vm->state = vm_state_create();
 	vm->stack = vm_stack_create();
@@ -105,7 +106,7 @@ vm_t *vm_init(char *buf)
 
 void vm_run(vm_t *vm)
 {
-	while (vm->buf[++vm->ip] != '\0' && !vm->is_error) {
+	while (vm->buf[++vm->ip] && !vm->is_error) {
 		switch (vm->buf[vm->ip]) {
 			// move imm8 to general-purpose register.
 			case VM_INSN_MOVB_IMM8_TO_R0:
@@ -217,24 +218,6 @@ void vm_run(vm_t *vm)
 				break;
 			case VM_INSN_MULB_IMM8_IMM8_TO_R3:
 				vm_insn_mulb_imm8_imm8_to_r3(vm);
-				break;
-			case VM_INSN_STORE:
-				vm_insn_store_op(vm);
-				break;
-			case VM_INSN_STORE_16:
-				vm_insn_store16_op(vm);
-				break;
-			case VM_INSN_ADD_OP:
-				vm_insn_add_op(vm);
-				break;
-			case VM_INSN_SUB_OP:
-				vm_insn_sub_op(vm);
-				break;
-			case VM_INSN_MUL_OP:
-				vm_insn_mul_op(vm);
-				break;
-			case VM_INSN_DIV_OP:
-				vm_insn_div_op(vm);
 				break;
 			case VM_INSN_PRINT_IMM8:
 				vm_insn_print_imm8(vm);
