@@ -4,12 +4,14 @@ Dummy bytecode VM implementation.
 1. How to compile:
 	- make
 
-After compiling, there was 2 executable file named 'compiler' and 'dispatcher'.
-'compiler' executable file are used to compile source file, and source file must ended by
-'.dasm' extension. 'dispatcher' executable file are used to run compiled bytecode from
-associated source file.
+After compiling, there was 2 executable file named 'compiler'
+and 'dispatcher'. 'compiler' executable file are used to compile
+source file, and source file must ended by '.dasm' extension. 'dispatcher'
+executable file are used to run compiled bytecode from associated source file.
 
-Assuming you have source file named 'sample.dasm'. after compile that file, it's result must be 'sample.cplx'. you can run it's result file with 'dispatcher' executable file.
+Assuming you have source file named 'sample.dasm'. after compile that file,
+it's result must be 'sample.cplx'. you can run it's result file with 'dispatcher'
+executable file.
 
 Example:
 $ compiler -c sample.dasm
