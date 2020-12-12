@@ -6,8 +6,8 @@ extern "C" {
 #endif
 
 typedef struct vm_value {
-	unsigned short val;
-	unsigned int is_negative;
+  unsigned short val;
+  unsigned int is_negative;
 } vm_value_t;
 
 vm_value_t *vm_value_create(void);

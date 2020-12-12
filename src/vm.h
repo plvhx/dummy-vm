@@ -9,29 +9,29 @@ extern "C" {
 #include "value.h"
 
 typedef struct vm_state {
-	int opcode;
-	struct vm_state *next;
+  int opcode;
+  struct vm_state *next;
 } vm_state_t;
 
 typedef struct vm_stack {
-	vm_value_t *value;
-	struct vm_stack *next;
+  vm_value_t *value;
+  struct vm_stack *next;
 } vm_stack_t;
 
 typedef struct vm {
-	unsigned char *buf;
-	int ip;
-	int is_error;
-	size_t buflen;
-	vm_regs_t *regs;
-	vm_state_t *state;
-	vm_stack_t *stack;
+  unsigned char *buf;
+  int ip;
+  int is_error;
+  size_t buflen;
+  vm_regs_t *regs;
+  vm_state_t *state;
+  vm_stack_t *stack;
 } vm_t;
 
-#define VM_REGS_GET_GP_R0(vm)	REGS_GET_GP_R0(vm->regs)
-#define VM_REGS_GET_GP_R1(vm)	REGS_GET_GP_R1(vm->regs)
-#define VM_REGS_GET_GP_R2(vm)	REGS_GET_GP_R2(vm->regs)
-#define VM_REGS_GET_GP_R3(vm)	REGS_GET_GP_R3(vm->regs)
+#define VM_REGS_GET_GP_R0(vm) REGS_GET_GP_R0(vm->regs)
+#define VM_REGS_GET_GP_R1(vm) REGS_GET_GP_R1(vm->regs)
+#define VM_REGS_GET_GP_R2(vm) REGS_GET_GP_R2(vm->regs)
+#define VM_REGS_GET_GP_R3(vm) REGS_GET_GP_R3(vm->regs)
 
 vm_state_t *vm_state_create(void);
 vm_state_t *vm_state_insert(vm_state_t *state, int opcode);
