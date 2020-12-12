@@ -78,7 +78,7 @@ typedef struct vm_ast {
 #define VM_AST_GET_MNEMONIC_NAME(ast)	((ast)->mnemonic.name)
 #define VM_AST_GET_NUMBER_VAL(ast)		((ast)->number.val)
 #define VM_AST_GET_NUM_CHILDS(ast)		((ast)->num_childs)
-#define VM_AST_GET_NUM_CHILDS_ALLOC_SIZE	((ast)->num_childs_alloc_size)
+#define VM_AST_GET_NUM_CHILDS_ALLOC_SIZE(ast)	((ast)->num_childs_alloc_size)
 
 vm_ast_t *vm_ast_create(unsigned short kind_type, const void *ast_value);
 vm_ast_t *vm_ast_create_multi_ex(unsigned short kind_type, const void *ast_value, ...);
