@@ -100,6 +100,11 @@ void vm_insn_mulb_imm8_imm8_to_r1(vm_t *vm);
 void vm_insn_mulb_imm8_imm8_to_r2(vm_t *vm);
 void vm_insn_mulb_imm8_imm8_to_r3(vm_t *vm);
 
+void vm_insn_divb_imm8_imm8_to_r0(vm_t *vm);
+void vm_insn_divb_imm8_imm8_to_r1(vm_t *vm);
+void vm_insn_divb_imm8_imm8_to_r2(vm_t *vm);
+void vm_insn_divb_imm8_imm8_to_r3(vm_t *vm);
+
 void vm_insn_print_imm8(vm_t *vm);
 void vm_insn_print_r0(vm_t *vm);
 void vm_insn_print_r1(vm_t *vm);

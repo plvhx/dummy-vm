@@ -205,9 +205,26 @@ void vm_run(vm_t *vm) {
     case VM_INSN_MULB_IMM8_IMM8_TO_R3:
       vm_insn_mulb_imm8_imm8_to_r3(vm);
       break;
+    // divide imm8, imm8 and store its result to
+    // general-purpose register.
+    case VM_INSN_DIVB_IMM8_IMM8_TO_R0:
+      vm_insn_divb_imm8_imm8_to_r0(vm);
+      break;
+    case VM_INSN_DIVB_IMM8_IMM8_TO_R1:
+      vm_insn_divb_imm8_imm8_to_r1(vm);
+      break;
+    case VM_INSN_DIVB_IMM8_IMM8_TO_R2:
+      vm_insn_divb_imm8_imm8_to_r2(vm);
+      break;
+    case VM_INSN_DIVB_IMM8_IMM8_TO_R3:
+      vm_insn_divb_imm8_imm8_to_r3(vm);
+      break;
+    // print immediate 8-bit integer value.
     case VM_INSN_PRINT_IMM8:
       vm_insn_print_imm8(vm);
       break;
+    // print integer value from associated
+    // general-purpose register.
     case VM_INSN_PRINT_R0:
       vm_insn_print_r0(vm);
       break;
@@ -220,6 +237,7 @@ void vm_run(vm_t *vm) {
     case VM_INSN_PRINT_R3:
       vm_insn_print_r3(vm);
       break;
+    // invalid opcode handler.
     default:
       vm_insn_unknown_bytecode_handler(vm);
       break;
