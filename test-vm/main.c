@@ -1,0 +1,22 @@
+#include <stdio.h>
+#include "test_vm.h"
+
+int main(void) {
+  test_movb_imm8_to_r0();
+  test_movb_imm8_to_r1();
+  test_movb_imm8_to_r2();
+  test_movb_imm8_to_r3();
+
+  test_movb_r0_to_r0();
+  test_movb_r1_to_r0();
+  test_movb_r2_to_r0();
+  test_movb_r3_to_r0();
+
+  test_movb_r0_to_r1();
+  test_movb_r1_to_r1();
+  test_movb_r2_to_r1();
+  test_movb_r3_to_r1();
+
+  printf("All tests passed.\n");
+  return 0;
+}

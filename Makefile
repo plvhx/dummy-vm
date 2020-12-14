@@ -4,6 +4,7 @@ YACC = bison
 MV = mv
 
 SRCDIR = ./src
+TESTVM_DIR = ./test-vm
 
 LEXER_OBJ_DEPS = \
 	$(SRCDIR)/vm_langspec_lexer.c \
@@ -14,20 +15,78 @@ COMPILER_OBJS = \
 	$(SRCDIR)/vm_langspec_lexer.o \
 	$(SRCDIR)/vm_langspec_parser.o
 
-DISPATCHER_OBJS = \
+RUNNER_OBJS = \
 	$(SRCDIR)/insn.o \
 	$(SRCDIR)/regs.o \
 	$(SRCDIR)/value.o \
-	$(SRCDIR)/vm.o \
+	$(SRCDIR)/vm.o
+
+DISPATCHER_OBJS = \
+	$(RUNNER_OBJS) \
 	dispatcher.o
 
-all: compiler dispatcher
+TESTVM_OBJS = \
+	$(RUNNER_OBJS) \
+	$(TESTVM_DIR)/movb_imm8_to_r0.o \
+	$(TESTVM_DIR)/movb_imm8_to_r1.o \
+	$(TESTVM_DIR)/movb_imm8_to_r2.o \
+	$(TESTVM_DIR)/movb_imm8_to_r3.o \
+	$(TESTVM_DIR)/movb_r0_to_r0.o \
+	$(TESTVM_DIR)/movb_r1_to_r0.o \
+	$(TESTVM_DIR)/movb_r2_to_r0.o \
+	$(TESTVM_DIR)/movb_r3_to_r0.o \
+	$(TESTVM_DIR)/movb_r0_to_r1.o \
+	$(TESTVM_DIR)/movb_r1_to_r1.o \
+	$(TESTVM_DIR)/movb_r2_to_r1.o \
+	$(TESTVM_DIR)/movb_r3_to_r1.o \
+	$(TESTVM_DIR)/main.o
+
+all: compiler dispatcher test-vm
 
 compiler: $(COMPILER_OBJS)
 	$(CC) -o compiler $(COMPILER_OBJS)
 
 dispatcher: $(DISPATCHER_OBJS)
 	$(CC) -o dispatcher $(DISPATCHER_OBJS)
+
+test-vm: $(TESTVM_OBJS)
+	$(CC) -o $(TESTVM_DIR)/test_vm $(TESTVM_OBJS)
+
+$(TESTVM_DIR)/movb_imm8_to_r0.o: $(TESTVM_DIR)/movb_imm8_to_r0.c
+	$(CC) -c $< -o $@
+
+$(TESTVM_DIR)/movb_imm8_to_r1.o: $(TESTVM_DIR)/movb_imm8_to_r1.c
+	$(CC) -c $< -o $@
+
+$(TESTVM_DIR)/movb_imm8_to_r2.o: $(TESTVM_DIR)/movb_imm8_to_r2.c
+	$(CC) -c $< -o $@
+
+$(TESTVM_DIR)/movb_imm8_to_r3.o: $(TESTVM_DIR)/movb_imm8_to_r3.c
+	$(CC) -c $< -o $@
+
+$(TESTVM_DIR)/movb_r0_to_r0.o: $(TESTVM_DIR)/movb_r0_to_r0.c
+	$(CC) -c $< -o $@
+
+$(TESTVM_DIR)/movb_r1_to_r0.o: $(TESTVM_DIR)/movb_r1_to_r0.c
+	$(CC) -c $< -o $@
+
+$(TESTVM_DIR)/movb_r2_to_r0.o: $(TESTVM_DIR)/movb_r2_to_r0.c
+	$(CC) -c $< -o $@
+
+$(TESTVM_DIR)/movb_r3_to_r0.o: $(TESTVM_DIR)/movb_r3_to_r0.c
+	$(CC) -c $< -o $@
+
+$(TESTVM_DIR)/movb_r0_to_r1.o: $(TESTVM_DIR)/movb_r0_to_r1.c
+	$(CC) -c $< -o $@
+
+$(TESTVM_DIR)/movb_r1_to_r1.o: $(TESTVM_DIR)/movb_r1_to_r1.c
+	$(CC) -c $< -o $@
+
+$(TESTVM_DIR)/movb_r2_to_r1.o: $(TESTVM_DIR)/movb_r2_to_r1.c
+	$(CC) -c $< -o $@
+
+$(TESTVM_DIR)/movb_r3_to_r1.o: $(TESTVM_DIR)/movb_r3_to_r1.c
+	$(CC) -c $< -o $@
 
 $(SRCDIR)/ast.o: $(SRCDIR)/ast.c
 	$(CC) -c $< -o $@
@@ -65,6 +124,8 @@ clean:
 		$(SRCDIR)/vm_langspec_parser.tab.c \
 		$(SRCDIR)/vm_langspec_parser.tab.h
 	rm -f $(SRCDIR)/*.o
+	rm -f $(TESTVM_DIR)/*.o
+	rm -f $(TESTVM_DIR)/test_vm
 	rm -f compiler.o
 	rm -f compiler
 	rm -f dispatcher.o

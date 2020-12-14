@@ -28,10 +28,10 @@ typedef struct vm {
   vm_stack_t *stack;
 } vm_t;
 
-#define VM_REGS_GET_GP_R0(vm) REGS_GET_GP_R0(vm->regs)
-#define VM_REGS_GET_GP_R1(vm) REGS_GET_GP_R1(vm->regs)
-#define VM_REGS_GET_GP_R2(vm) REGS_GET_GP_R2(vm->regs)
-#define VM_REGS_GET_GP_R3(vm) REGS_GET_GP_R3(vm->regs)
+#define VM_REGS_GET_R0_VAL(vm) REGS_GET_R0_VAL(vm->regs)
+#define VM_REGS_GET_R1_VAL(vm) REGS_GET_R1_VAL(vm->regs)
+#define VM_REGS_GET_R2_VAL(vm) REGS_GET_R2_VAL(vm->regs)
+#define VM_REGS_GET_R3_VAL(vm) REGS_GET_R3_VAL(vm->regs)
 
 vm_state_t *vm_state_create(void);
 vm_state_t *vm_state_insert(vm_state_t *state, int opcode);

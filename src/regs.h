@@ -21,15 +21,15 @@ typedef struct vm_regs { vm_gp_regs_t *gp; } vm_regs_t;
   (!regs->gp->r0->is_negative ? (regs)->gp->r0->val                            \
                               : VM_NEGATE_BYTE((regs)->gp->r0->val))
 
-#define REGS_GET_R1(regs)                                                      \
+#define REGS_GET_R1_VAL(regs)                                                  \
   (!regs->gp->r1->is_negative ? (regs)->gp->r1->val                            \
                               : VM_NEGATE_BYTE((regs)->gp->r1->val))
 
-#define REGS_GET_GP_R2(regs)                                                   \
+#define REGS_GET_R2_VAL(regs)                                                  \
   (!regs->gp->r2->is_negative ? (regs)->gp->r2->val                            \
                               : VM_NEGATE_BYTE((regs)->gp->r2->val))
 
-#define REGS_GET_GP_R3(regs)                                                   \
+#define REGS_GET_R3_VAL(regs)                                                  \
   (!regs->gp->r3->is_negative ? (regs)->gp->r3->val                            \
                               : VM_NEGATE_BYTE((regs)->gp->r3->val))
 
