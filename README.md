@@ -46,6 +46,10 @@ And integer value allowed in this bytecode are max. 16-bit size.
 - movb r3, <regs>
 	Move 8-bit integer value from any register (r0, r1, r2, r3) to r3 register.
 
+- addb <regs>, <imm8>, <imm8>
+	Add 8-bit integer and 8-bit integer then store it's result to any register
+	(r0, r1, r2, r3)
+
 - print <imm8>
 	Print 8-bit integer value.
 

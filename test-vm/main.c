@@ -22,6 +22,11 @@ int main(void) {
   test_movb_r2_to_r2();
   test_movb_r3_to_r2();
 
+  test_addb_imm8_imm8_to_r0();
+  test_addb_imm8_imm8_to_r1();
+  test_addb_imm8_imm8_to_r2();
+  test_addb_imm8_imm8_to_r3();
+
   printf("All tests passed.\n");
   return 0;
 }
