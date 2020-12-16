@@ -96,13 +96,16 @@ static void vm_ast_process_ternary_addb_imm8_imm8_instruction(
 
   unsigned int is_negated;
 
-  if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r0")) {
+  if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]), "r0")) {
     visitor(file, VM_INSN_ADDB_IMM8_IMM8_TO_R0);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r1")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r1")) {
     visitor(file, VM_INSN_ADDB_IMM8_IMM8_TO_R1);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r2")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r2")) {
     visitor(file, VM_INSN_ADDB_IMM8_IMM8_TO_R2);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r3")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r3")) {
     visitor(file, VM_INSN_ADDB_IMM8_IMM8_TO_R3);
   }
 
@@ -129,13 +132,16 @@ static void vm_ast_process_ternary_subb_imm8_imm8_instruction(
 
   unsigned int is_negated;
 
-  if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r0")) {
+  if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]), "r0")) {
     visitor(file, VM_INSN_SUBB_IMM8_IMM8_TO_R0);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r1")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r1")) {
     visitor(file, VM_INSN_SUBB_IMM8_IMM8_TO_R1);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r2")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r2")) {
     visitor(file, VM_INSN_SUBB_IMM8_IMM8_TO_R2);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r3")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r3")) {
     visitor(file, VM_INSN_SUBB_IMM8_IMM8_TO_R3);
   }
 
@@ -162,13 +168,16 @@ static void vm_ast_process_ternary_mulb_imm8_imm8_instruction(
 
   unsigned int is_negated;
 
-  if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r0")) {
+  if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]), "r0")) {
     visitor(file, VM_INSN_MULB_IMM8_IMM8_TO_R0);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r1")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r1")) {
     visitor(file, VM_INSN_MULB_IMM8_IMM8_TO_R1);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r2")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r2")) {
     visitor(file, VM_INSN_MULB_IMM8_IMM8_TO_R2);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r3")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r3")) {
     visitor(file, VM_INSN_MULB_IMM8_IMM8_TO_R3);
   }
 
@@ -195,13 +204,16 @@ static void vm_ast_process_ternary_divb_imm8_imm8_instruction(
 
   unsigned int is_negated;
 
-  if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r0")) {
+  if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]), "r0")) {
     visitor(file, VM_INSN_DIVB_IMM8_IMM8_TO_R0);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r1")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r1")) {
     visitor(file, VM_INSN_DIVB_IMM8_IMM8_TO_R1);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r2")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r2")) {
     visitor(file, VM_INSN_DIVB_IMM8_IMM8_TO_R2);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r3")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r3")) {
     visitor(file, VM_INSN_DIVB_IMM8_IMM8_TO_R3);
   }
 
@@ -226,13 +238,16 @@ static void vm_ast_process_binary_movb_imm8_to_regs_instruction(
     return;
   }
 
-  if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r0")) {
+  if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]), "r0")) {
     visitor(file, VM_INSN_MOVB_IMM8_TO_R0);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r1")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r1")) {
     visitor(file, VM_INSN_MOVB_IMM8_TO_R1);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r2")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r2")) {
     visitor(file, VM_INSN_MOVB_IMM8_TO_R2);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r3")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r3")) {
     visitor(file, VM_INSN_MOVB_IMM8_TO_R3);
   }
 
@@ -251,13 +266,16 @@ static void vm_ast_process_binary_movb_regs_to_r0_instruction(
     return;
   }
 
-  if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r0")) {
+  if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[2]), "r0")) {
     visitor(file, VM_INSN_MOVB_R0_TO_R0);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r1")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[2]),
+                         "r1")) {
     visitor(file, VM_INSN_MOVB_R1_TO_R0);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r2")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[2]),
+                         "r2")) {
     visitor(file, VM_INSN_MOVB_R2_TO_R0);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r3")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[2]),
+                         "r3")) {
     visitor(file, VM_INSN_MOVB_R3_TO_R0);
   }
 }
@@ -268,13 +286,16 @@ static void vm_ast_process_binary_movb_regs_to_r1_instruction(
     return;
   }
 
-  if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r0")) {
+  if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[2]), "r0")) {
     visitor(file, VM_INSN_MOVB_R0_TO_R1);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r1")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[2]),
+                         "r1")) {
     visitor(file, VM_INSN_MOVB_R1_TO_R1);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r2")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[2]),
+                         "r2")) {
     visitor(file, VM_INSN_MOVB_R2_TO_R1);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r3")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[2]),
+                         "r3")) {
     visitor(file, VM_INSN_MOVB_R3_TO_R1);
   }
 }
@@ -285,13 +306,16 @@ static void vm_ast_process_binary_movb_regs_to_r2_instruction(
     return;
   }
 
-  if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r0")) {
+  if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[2]), "r0")) {
     visitor(file, VM_INSN_MOVB_R0_TO_R2);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r1")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[2]),
+                         "r1")) {
     visitor(file, VM_INSN_MOVB_R1_TO_R2);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r2")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[2]),
+                         "r2")) {
     visitor(file, VM_INSN_MOVB_R2_TO_R2);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r3")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[2]),
+                         "r3")) {
     visitor(file, VM_INSN_MOVB_R3_TO_R2);
   }
 }
@@ -302,13 +326,16 @@ static void vm_ast_process_binary_movb_regs_to_r3_instruction(
     return;
   }
 
-  if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r0")) {
+  if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[2]), "r0")) {
     visitor(file, VM_INSN_MOVB_R0_TO_R3);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r1")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[2]),
+                         "r1")) {
     visitor(file, VM_INSN_MOVB_R1_TO_R3);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r2")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[2]),
+                         "r2")) {
     visitor(file, VM_INSN_MOVB_R2_TO_R3);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[2]), "r3")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[2]),
+                         "r3")) {
     visitor(file, VM_INSN_MOVB_R3_TO_R3);
   }
 }
@@ -336,13 +363,16 @@ static void vm_ast_process_unary_print_regs_instruction(
     return;
   }
 
-  if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r0")) {
+  if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]), "r0")) {
     visitor(file, VM_INSN_PRINT_R0);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r1")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r1")) {
     visitor(file, VM_INSN_PRINT_R1);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r2")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r2")) {
     visitor(file, VM_INSN_PRINT_R2);
-  } else if (!strcasecmp(VM_AST_GET_REGS_NAME(ast->childs[1]), "r3")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r3")) {
     visitor(file, VM_INSN_PRINT_R3);
   }
 }

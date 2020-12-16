@@ -25,6 +25,11 @@ void test_movb_r1_to_r2(void);
 void test_movb_r2_to_r2(void);
 void test_movb_r3_to_r2(void);
 
+void test_addb_imm8_imm8_to_r0(void);
+void test_addb_imm8_imm8_to_r1(void);
+void test_addb_imm8_imm8_to_r2(void);
+void test_addb_imm8_imm8_to_r3(void);
+
 #ifdef __cplusplus
 }
 #endif
