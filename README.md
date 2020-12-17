@@ -54,6 +54,10 @@ And integer value allowed in this bytecode are max. 16-bit size.
 	Subtract 8-bit integer and 8-bit integer then store it's result to any general-purpose
 	register (r0, r1, r2, r3).
 
+- mulb <regs>, <imm8>, <imm8>
+	Multiply 8-bit integer and 8-bit integer then store it's result to any general-purpose
+	register (r0, r1, r2, r3)
+
 - print <imm8>
 	Print 8-bit integer value.
 
