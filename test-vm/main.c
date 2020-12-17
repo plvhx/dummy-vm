@@ -37,6 +37,11 @@ int main(void) {
   test_mulb_imm8_imm8_to_r2();
   test_mulb_imm8_imm8_to_r3();
 
+  test_divb_imm8_imm8_to_r0();
+  test_divb_imm8_imm8_to_r1();
+  test_divb_imm8_imm8_to_r2();
+  test_divb_imm8_imm8_to_r3();
+
   printf("All tests passed.\n");
   return 0;
 }

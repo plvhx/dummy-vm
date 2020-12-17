@@ -58,6 +58,10 @@ And integer value allowed in this bytecode are max. 16-bit size.
 	Multiply 8-bit integer and 8-bit integer then store it's result to any general-purpose
 	register (r0, r1, r2, r3)
 
+- divb <regs>, <imm8>, <imm8>
+	Divide 8-bit integer and 8-bit integer then store it's result to any general-purpose
+	register (r0, r1, r2, r3)
+
 - print <imm8>
 	Print 8-bit integer value.
 
