@@ -43,6 +43,10 @@ TESTVM_OBJS = \
 	$(TESTVM_DIR)/movb_r1_to_r2.o \
 	$(TESTVM_DIR)/movb_r2_to_r2.o \
 	$(TESTVM_DIR)/movb_r3_to_r2.o \
+	$(TESTVM_DIR)/movb_r0_to_r3.o \
+	$(TESTVM_DIR)/movb_r1_to_r3.o \
+	$(TESTVM_DIR)/movb_r2_to_r3.o \
+	$(TESTVM_DIR)/movb_r3_to_r3.o \
 	$(TESTVM_DIR)/addb_imm8_imm8_to_r0.o \
 	$(TESTVM_DIR)/addb_imm8_imm8_to_r1.o \
 	$(TESTVM_DIR)/addb_imm8_imm8_to_r2.o \
@@ -118,6 +122,18 @@ $(TESTVM_DIR)/movb_r2_to_r2.o: $(TESTVM_DIR)/movb_r2_to_r2.c
 	$(CC) -c $< -o $@
 
 $(TESTVM_DIR)/movb_r3_to_r2.o: $(TESTVM_DIR)/movb_r3_to_r2.c
+	$(CC) -c $< -o $@
+
+$(TESTVM_DIR)/movb_r0_to_r3.o: $(TESTVM_DIR)/movb_r0_to_r3.c
+	$(CC) -c $< -o $@
+
+$(TESTVM_DIR)/movb_r1_to_r3.o: $(TESTVM_DIR)/movb_r1_to_r3.c
+	$(CC) -c $< -o $@
+
+$(TESTVM_DIR)/movb_r2_to_r3.o: $(TESTVM_DIR)/movb_r2_to_r3.c
+	$(CC) -c $< -o $@
+
+$(TESTVM_DIR)/movb_r3_to_r3.o: $(TESTVM_DIR)/movb_r3_to_r3.c
 	$(CC) -c $< -o $@
 
 $(TESTVM_DIR)/addb_imm8_imm8_to_r0.o: $(TESTVM_DIR)/addb_imm8_imm8_to_r0.c
