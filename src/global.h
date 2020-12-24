@@ -7,7 +7,9 @@ extern "C" {
 
 #include "ast.h"
 
-typedef struct vm_compiler_global { vm_ast_t *ast; } vm_compiler_global_t;
+typedef struct vm_compiler_global {
+  vm_ast_t *ast;
+} vm_compiler_global_t;
 
 static vm_compiler_global_t compiler_global = {.ast = NULL};
 

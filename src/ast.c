@@ -124,6 +124,41 @@ static void vm_ast_process_ternary_addb_imm8_imm8_instruction(
                     : atoi((char *)VM_AST_GET_NUMBER_VAL(ast->childs[3]) + 1));
 }
 
+static void vm_ast_process_ternary_addb_imm8_regs_instruction(
+    vm_ast_t *ast, FILE *file, void (*visitor)(FILE *file, int opcode)) {
+  if (VM_AST_GET_NUM_CHILDS(ast) != 4) {
+    return;
+  }
+
+  if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]), "r0") &&
+      !strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[3]), "r0")) {
+    visitor(file, VM_INSN_ADDB_IMM8_R0_TO_R0);
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r1") &&
+             !strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[3]),
+                         "r0")) {
+    visitor(file, VM_INSN_ADDB_IMM8_R0_TO_R1);
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r2") &&
+             !strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[3]),
+                         "r0")) {
+    visitor(file, VM_INSN_ADDB_IMM8_R0_TO_R2);
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r3") &&
+             !strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[3]),
+                         "r0")) {
+    visitor(file, VM_INSN_ADDB_IMM8_R0_TO_R3);
+  }
+
+  unsigned int is_negated =
+      VM_AST_GET_NUMBER_VAL(ast->childs[2])[0] == '-' ? 0xff : 0xfa;
+
+  visitor(file, is_negated);
+  visitor(file, is_negated == 0xfa
+                    ? atoi((char *)VM_AST_GET_NUMBER_VAL(ast->childs[2]))
+                    : atoi((char *)VM_AST_GET_NUMBER_VAL(ast->childs[2]) + 1));
+}
+
 static void vm_ast_process_ternary_subb_imm8_imm8_instruction(
     vm_ast_t *ast, FILE *file, void (*visitor)(FILE *file, int opcode)) {
   if (VM_AST_GET_NUM_CHILDS(ast) != 4) {
@@ -402,6 +437,13 @@ static void vm_ast_process_instruction_line(vm_ast_t *ast, FILE *file,
              ast->childs[2]->kind_type == VM_AST_INTEGER_VALUE &&
              ast->childs[3]->kind_type == VM_AST_INTEGER_VALUE) {
     vm_ast_process_ternary_divb_imm8_imm8_instruction(ast, file, visitor);
+  }
+
+  if (!strcasecmp((char *)ast->childs[0]->mnemonic.name, "addb") &&
+      ast->childs[1]->kind_type == VM_AST_REGISTER &&
+      ast->childs[2]->kind_type == VM_AST_INTEGER_VALUE &&
+      ast->childs[3]->kind_type == VM_AST_REGISTER) {
+    vm_ast_process_ternary_addb_imm8_regs_instruction(ast, file, visitor);
   }
 
   // process 'movb' imm8 to general-purpose register

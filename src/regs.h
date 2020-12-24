@@ -15,7 +15,9 @@ typedef struct vm_gp_regs {
   vm_value_t *r3;
 } vm_gp_regs_t;
 
-typedef struct vm_regs { vm_gp_regs_t *gp; } vm_regs_t;
+typedef struct vm_regs {
+  vm_gp_regs_t *gp;
+} vm_regs_t;
 
 #define REGS_GET_R0_VAL(regs)                                                  \
   (!regs->gp->r0->is_negative ? (regs)->gp->r0->val                            \

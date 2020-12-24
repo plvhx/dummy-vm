@@ -1,7 +1,7 @@
-#include <assert.h>
-#include <string.h>
 #include "../src/insn.h"
 #include "../src/vm.h"
+#include <assert.h>
+#include <string.h>
 
 static unsigned char test0[] = {VM_INSN_MOVB_IMM8_TO_R3, 0xfa, 0x0a,
                                 VM_INSN_MOVB_R3_TO_R0, 0x00};

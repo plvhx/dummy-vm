@@ -5,9 +5,9 @@
 extern "C" {
 #endif
 
-#include <stdio.h>
 #include <stdarg.h>
 #include <stddef.h>
+#include <stdio.h>
 
 typedef enum vm_kind {
   VM_AST_ROOT,
@@ -17,11 +17,17 @@ typedef enum vm_kind {
   VM_AST_INSTRUCTION_LINE
 } vm_kind_t;
 
-typedef union vm_register { unsigned char *name; } vm_register_t;
+typedef union vm_register {
+  unsigned char *name;
+} vm_register_t;
 
-typedef union vm_mnemonic { unsigned char *name; } vm_mnemonic_t;
+typedef union vm_mnemonic {
+  unsigned char *name;
+} vm_mnemonic_t;
 
-typedef union vm_number { unsigned char *val; } vm_number_t;
+typedef union vm_number {
+  unsigned char *val;
+} vm_number_t;
 
 typedef struct vm_ast {
   unsigned short kind_type;

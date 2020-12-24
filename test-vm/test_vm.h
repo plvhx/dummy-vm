@@ -50,6 +50,11 @@ void test_divb_imm8_imm8_to_r1(void);
 void test_divb_imm8_imm8_to_r2(void);
 void test_divb_imm8_imm8_to_r3(void);
 
+void test_addb_imm8_r0_to_r0(void);
+void test_addb_imm8_r0_to_r1(void);
+void test_addb_imm8_r0_to_r2(void);
+void test_addb_imm8_r0_to_r3(void);
+
 #ifdef __cplusplus
 }
 #endif

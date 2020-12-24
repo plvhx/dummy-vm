@@ -1,5 +1,5 @@
-#include <stdio.h>
 #include "test_vm.h"
+#include <stdio.h>
 
 int main(void) {
   test_movb_imm8_to_r0();
@@ -46,6 +46,8 @@ int main(void) {
   test_divb_imm8_imm8_to_r1();
   test_divb_imm8_imm8_to_r2();
   test_divb_imm8_imm8_to_r3();
+
+  test_addb_imm8_r0_to_r0();
 
   printf("All tests passed.\n");
   return 0;

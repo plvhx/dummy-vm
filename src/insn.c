@@ -1,8 +1,8 @@
-#include <stdio.h>
 #include "insn.h"
 #include "util.h"
 #include "value.h"
 #include "vm.h"
+#include <stdio.h>
 
 static unsigned short vm_insn_read_byte(vm_t *vm) {
   return (unsigned short)(vm->buf[++vm->ip] & 0xff);
@@ -458,6 +458,86 @@ void vm_insn_divb_imm8_imm8_to_r3(vm_t *vm) {
   }
 
   short res = op1 / op2;
+
+  vm->regs->gp->r3->is_negative = ((short)res < 0) ? 1 : 0;
+  vm->regs->gp->r3->val =
+      !vm->regs->gp->r3->is_negative
+          ? VM_ALIGN_TO_BYTE((unsigned short)res)
+          : 0xff - (VM_ALIGN_TO_BYTE((unsigned short)res) - 1);
+}
+
+void vm_insn_addb_imm8_r0_to_r0(vm_t *vm) {
+  vm->state = vm_state_insert(vm->state, VM_INSN_ADDB_IMM8_R0_TO_R0);
+
+  short op1 = vm_insn_read_byte(vm) == 0xff
+                  ? VM_NEGATE_BYTE(vm_insn_read_byte(vm))
+                  : vm_insn_read_byte(vm);
+
+  short op2 = vm->regs->gp->r0->is_negative
+                  ? VM_NEGATE_BYTE(vm->regs->gp->r0->val)
+                  : vm->regs->gp->r0->val;
+
+  short res = op1 + op2;
+
+  vm->regs->gp->r0->is_negative = ((short)res < 0) ? 1 : 0;
+  vm->regs->gp->r0->val =
+      !vm->regs->gp->r0->is_negative
+          ? VM_ALIGN_TO_BYTE((unsigned short)res)
+          : 0xff - (VM_ALIGN_TO_BYTE((unsigned short)res) - 1);
+}
+
+void vm_insn_addb_imm8_r0_to_r1(vm_t *vm) {
+  vm->state = vm_state_insert(vm->state, VM_INSN_ADDB_IMM8_R0_TO_R1);
+
+  short op1 = vm_insn_read_byte(vm) == 0xff
+                  ? VM_NEGATE_BYTE(vm_insn_read_byte(vm))
+                  : vm_insn_read_byte(vm);
+
+  short op2 = vm->regs->gp->r0->is_negative
+                  ? VM_NEGATE_BYTE(vm->regs->gp->r0->val)
+                  : vm->regs->gp->r0->val;
+
+  short res = op1 + op2;
+
+  vm->regs->gp->r1->is_negative = ((short)res < 0) ? 1 : 0;
+  vm->regs->gp->r1->val =
+      !vm->regs->gp->r1->is_negative
+          ? VM_ALIGN_TO_BYTE((unsigned short)res)
+          : 0xff - (VM_ALIGN_TO_BYTE((unsigned short)res) - 1);
+}
+
+void vm_insn_addb_imm8_r0_to_r2(vm_t *vm) {
+  vm->state = vm_state_insert(vm->state, VM_INSN_ADDB_IMM8_R0_TO_R2);
+
+  short op1 = vm_insn_read_byte(vm) == 0xff
+                  ? VM_NEGATE_BYTE(vm_insn_read_byte(vm))
+                  : vm_insn_read_byte(vm);
+
+  short op2 = vm->regs->gp->r0->is_negative
+                  ? VM_NEGATE_BYTE(vm->regs->gp->r0->val)
+                  : vm->regs->gp->r0->val;
+
+  short res = op1 + op2;
+
+  vm->regs->gp->r2->is_negative = ((short)res < 0) ? 1 : 0;
+  vm->regs->gp->r2->val =
+      !vm->regs->gp->r2->is_negative
+          ? VM_ALIGN_TO_BYTE((unsigned short)res)
+          : 0xff - (VM_ALIGN_TO_BYTE((unsigned short)res) - 1);
+}
+
+void vm_insn_addb_imm8_r0_to_r3(vm_t *vm) {
+  vm->state = vm_state_insert(vm->state, VM_INSN_ADDB_IMM8_R0_TO_R3);
+
+  short op1 = vm_insn_read_byte(vm) == 0xff
+                  ? VM_NEGATE_BYTE(vm_insn_read_byte(vm))
+                  : vm_insn_read_byte(vm);
+
+  short op2 = vm->regs->gp->r0->is_negative
+                  ? VM_NEGATE_BYTE(vm->regs->gp->r0->val)
+                  : vm->regs->gp->r0->val;
+
+  short res = op1 + op2;
 
   vm->regs->gp->r3->is_negative = ((short)res < 0) ? 1 : 0;
   vm->regs->gp->r3->val =
