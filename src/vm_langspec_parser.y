@@ -128,29 +128,27 @@ static int vm_ast_ensure_file_extension(const char *file)
 	int i;
 	size_t len = strlen(file);
 
+	if (len <= 4) {
+		return -1;
+	}
+
 	for (i = 0; i < len; i++) {
-		if (file[i] == '.') {
-			break;
+		if (i + 4 == len - 1 &&
+			file[i + 0] == '.' &&
+			file[i + 1] == 'd' &&
+			file[i + 2] == 'a' &&
+			file[i + 3] == 's' &&
+			file[i + 4] == 'm') {
+			return 0;
 		}
 	}
 
-	if (len - (i + 1) != 4) {
-		return 0;
-	}
-
-	if (file[++i] != 'd' ||
-		file[++i] != 'a' ||
-		file[++i] != 's' ||
-		file[++i] != 'm') {
-		return 0;
-	}
-
-	return 1;
+	return -1;
 }
 
 static int vm_ast_compile(const char *file)
 {
-	if (!vm_ast_ensure_file_extension(file)) {
+	if (vm_ast_ensure_file_extension(file) < 0) {
 		return 0;
 	}
 
@@ -161,8 +159,9 @@ static int vm_ast_compile(const char *file)
 	int i;
 
 	for (i = 0; ofile[i] != '\0'; i++) {
-		if (ofile[i] == '.')
+		if (i + 4 == strlen(ofile) - 1 && ofile[i + 0] == '.') {
 			break;
+		}
 	}
 
 	ofile[++i] = 'c';
