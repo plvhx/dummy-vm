@@ -50,6 +50,7 @@ int main(void) {
   test_addb_imm8_r0_to_r0();
   test_addb_imm8_r0_to_r1();
   test_addb_imm8_r0_to_r2();
+  test_addb_imm8_r0_to_r3();
 
   printf("All tests passed.\n");
   return 0;
