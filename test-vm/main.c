@@ -57,6 +57,8 @@ int main(void) {
   test_subb_imm8_r0_to_r2();
   test_subb_imm8_r0_to_r3();
 
+  test_mulb_imm8_r0_to_r0();
+
   printf("All tests passed.\n");
   return 0;
 }
