@@ -706,17 +706,16 @@ void vm_insn_mulb_imm8_r0_to_r3(vm_t *vm) {
           : 0xff - (VM_ALIGN_TO_BYTE((unsigned short)res) - 1);
 }
 
-void vm_insn_divb_imm8_r0_to_r0(vm_t *vm)
-{
+void vm_insn_divb_imm8_r0_to_r0(vm_t *vm) {
   vm->state = vm_state_insert(vm->state, VM_INSN_DIVB_IMM8_R0_TO_R0);
 
   short op1 = vm_insn_read_byte(vm) == 0xff
-    ? VM_NEGATE_BYTE(vm_insn_read_byte(vm))
-    : vm_insn_read_byte(vm);
+                  ? VM_NEGATE_BYTE(vm_insn_read_byte(vm))
+                  : vm_insn_read_byte(vm);
 
   short op2 = vm->regs->gp->r0->is_negative
-    ? VM_NEGATE_BYTE(vm->regs->gp->r0->val)
-    : vm->regs->gp->r0->val;
+                  ? VM_NEGATE_BYTE(vm->regs->gp->r0->val)
+                  : vm->regs->gp->r0->val;
 
   if (!op2) {
     fprintf(stderr, "Division by zero.\n");
@@ -726,22 +725,22 @@ void vm_insn_divb_imm8_r0_to_r0(vm_t *vm)
   short res = op1 / op2;
 
   vm->regs->gp->r0->is_negative = ((short)res < 0) ? 1 : 0;
-  vm->regs->gp->r0->val = !vm->regs->gp->r0->is_negative
-    ? VM_ALIGN_TO_BYTE((unsigned short)res)
-    : 0xff - (VM_ALIGN_TO_BYTE((unsigned short)res) - 1);
+  vm->regs->gp->r0->val =
+      !vm->regs->gp->r0->is_negative
+          ? VM_ALIGN_TO_BYTE((unsigned short)res)
+          : 0xff - (VM_ALIGN_TO_BYTE((unsigned short)res) - 1);
 }
 
-void vm_insn_divb_imm8_r0_to_r1(vm_t *vm)
-{
+void vm_insn_divb_imm8_r0_to_r1(vm_t *vm) {
   vm->state = vm_state_insert(vm->state, VM_INSN_DIVB_IMM8_R0_TO_R1);
 
   short op1 = vm_insn_read_byte(vm) == 0xff
-    ? VM_NEGATE_BYTE(vm_insn_read_byte(vm))
-    : vm_insn_read_byte(vm);
+                  ? VM_NEGATE_BYTE(vm_insn_read_byte(vm))
+                  : vm_insn_read_byte(vm);
 
   short op2 = vm->regs->gp->r0->is_negative
-    ? VM_NEGATE_BYTE(vm->regs->gp->r0->val)
-    : vm->regs->gp->r0->val;
+                  ? VM_NEGATE_BYTE(vm->regs->gp->r0->val)
+                  : vm->regs->gp->r0->val;
 
   if (!op2) {
     fprintf(stderr, "Division by zero.\n");
@@ -751,22 +750,22 @@ void vm_insn_divb_imm8_r0_to_r1(vm_t *vm)
   short res = op1 / op2;
 
   vm->regs->gp->r1->is_negative = ((short)res < 0) ? 1 : 0;
-  vm->regs->gp->r1->val = !vm->regs->gp->r1->is_negative
-    ? VM_ALIGN_TO_BYTE((unsigned short)res)
-    : 0xff - (VM_ALIGN_TO_BYTE((unsigned short)res) - 1);
+  vm->regs->gp->r1->val =
+      !vm->regs->gp->r1->is_negative
+          ? VM_ALIGN_TO_BYTE((unsigned short)res)
+          : 0xff - (VM_ALIGN_TO_BYTE((unsigned short)res) - 1);
 }
 
-void vm_insn_divb_imm8_r0_to_r2(vm_t *vm)
-{
+void vm_insn_divb_imm8_r0_to_r2(vm_t *vm) {
   vm->state = vm_state_insert(vm->state, VM_INSN_DIVB_IMM8_R0_TO_R2);
 
   short op1 = vm_insn_read_byte(vm) == 0xff
-    ? VM_NEGATE_BYTE(vm_insn_read_byte(vm))
-    : vm_insn_read_byte(vm);
+                  ? VM_NEGATE_BYTE(vm_insn_read_byte(vm))
+                  : vm_insn_read_byte(vm);
 
   short op2 = vm->regs->gp->r0->is_negative
-    ? VM_NEGATE_BYTE(vm->regs->gp->r0->val)
-    : vm->regs->gp->r0->val;
+                  ? VM_NEGATE_BYTE(vm->regs->gp->r0->val)
+                  : vm->regs->gp->r0->val;
 
   if (!op2) {
     fprintf(stderr, "Division by zero.\n");
@@ -776,22 +775,22 @@ void vm_insn_divb_imm8_r0_to_r2(vm_t *vm)
   short res = op1 / op2;
 
   vm->regs->gp->r2->is_negative = ((short)res < 0) ? 1 : 0;
-  vm->regs->gp->r2->val = !vm->regs->gp->r2->is_negative
-    ? VM_ALIGN_TO_BYTE((unsigned short)res)
-    : 0xff - (VM_ALIGN_TO_BYTE((unsigned short)res) - 1);
+  vm->regs->gp->r2->val =
+      !vm->regs->gp->r2->is_negative
+          ? VM_ALIGN_TO_BYTE((unsigned short)res)
+          : 0xff - (VM_ALIGN_TO_BYTE((unsigned short)res) - 1);
 }
 
-void vm_insn_divb_imm8_r0_to_r3(vm_t *vm)
-{
+void vm_insn_divb_imm8_r0_to_r3(vm_t *vm) {
   vm->state = vm_state_insert(vm->state, VM_INSN_DIVB_IMM8_R0_TO_R3);
 
   short op1 = vm_insn_read_byte(vm) == 0xff
-    ? VM_NEGATE_BYTE(vm_insn_read_byte(vm))
-    : vm_insn_read_byte(vm);
+                  ? VM_NEGATE_BYTE(vm_insn_read_byte(vm))
+                  : vm_insn_read_byte(vm);
 
   short op2 = vm->regs->gp->r0->is_negative
-    ? VM_NEGATE_BYTE(vm->regs->gp->r0->val)
-    : vm->regs->gp->r0->val;
+                  ? VM_NEGATE_BYTE(vm->regs->gp->r0->val)
+                  : vm->regs->gp->r0->val;
 
   if (!op2) {
     fprintf(stderr, "Division by zero.\n");
@@ -801,9 +800,10 @@ void vm_insn_divb_imm8_r0_to_r3(vm_t *vm)
   short res = op1 / op2;
 
   vm->regs->gp->r3->is_negative = ((short)res < 0) ? 1 : 0;
-  vm->regs->gp->r3->val = !vm->regs->gp->r3->is_negative
-    ? VM_ALIGN_TO_BYTE((unsigned short)res)
-    : 0xff - (VM_ALIGN_TO_BYTE((unsigned short)res) - 1);
+  vm->regs->gp->r3->val =
+      !vm->regs->gp->r3->is_negative
+          ? VM_ALIGN_TO_BYTE((unsigned short)res)
+          : 0xff - (VM_ALIGN_TO_BYTE((unsigned short)res) - 1);
 }
 
 void vm_insn_print_imm8(vm_t *vm) {
