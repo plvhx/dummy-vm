@@ -82,6 +82,7 @@ TESTVM_OBJS = \
 	$(TESTVM_DIR)/addb_imm8_r1_to_r0.o \
 	$(TESTVM_DIR)/addb_imm8_r1_to_r1.o \
 	$(TESTVM_DIR)/addb_imm8_r1_to_r2.o \
+	$(TESTVM_DIR)/addb_imm8_r1_to_r3.o \
 	$(TESTVM_DIR)/main.o
 
 all: compiler dispatcher test-vm
@@ -258,6 +259,9 @@ $(TESTVM_DIR)/addb_imm8_r1_to_r1.o: $(TESTVM_DIR)/addb_imm8_r1_to_r1.c
 	$(CC) -c $< -o $@
 
 $(TESTVM_DIR)/addb_imm8_r1_to_r2.o: $(TESTVM_DIR)/addb_imm8_r1_to_r2.c
+	$(CC) -c $< -o $@
+
+$(TESTVM_DIR)/addb_imm8_r1_to_r3.o: $(TESTVM_DIR)/addb_imm8_r1_to_r3.c
 	$(CC) -c $< -o $@
 
 $(SRCDIR)/ast.o: $(SRCDIR)/ast.c
