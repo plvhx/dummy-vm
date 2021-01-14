@@ -68,6 +68,7 @@ int main(void) {
   test_divb_imm8_r0_to_r3();
 
   test_addb_imm8_r1_to_r0();
+  test_addb_imm8_r1_to_r1();
 
   printf("All tests passed.\n");
   return 0;
