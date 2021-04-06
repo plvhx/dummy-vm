@@ -426,14 +426,20 @@ static void vm_ast_process_ternary_divb_imm8_regs_instruction(
   if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]), "r0") &&
       !strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[3]), "r1")) {
     visitor(file, VM_INSN_DIVB_IMM8_R1_TO_R0);
-  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]), "r1") &&
-      !strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[3]), "r1")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r1") &&
+             !strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[3]),
+                         "r1")) {
     visitor(file, VM_INSN_DIVB_IMM8_R1_TO_R1);
-  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]), "r2") &&
-      !strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[3]), "r1")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r2") &&
+             !strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[3]),
+                         "r1")) {
     visitor(file, VM_INSN_DIVB_IMM8_R1_TO_R2);
-  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]), "r3") &&
-      !strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[3]), "r1")) {
+  } else if (!strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[1]),
+                         "r3") &&
+             !strcasecmp((const char *)VM_AST_GET_REGS_NAME(ast->childs[3]),
+                         "r1")) {
     visitor(file, VM_INSN_DIVB_IMM8_R1_TO_R3);
   }
 
