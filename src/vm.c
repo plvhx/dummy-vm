@@ -91,10 +91,8 @@ vm_t *vm_init(char *buf, size_t len) {
   return vm;
 }
 
-void vm_run(vm_t *vm) {
-  while (vm->buf[++vm->ip] && !vm->is_error) {
-    switch (vm->buf[vm->ip]) {
-    // move imm8 to general-purpose register.
+static void vm_movb_imm8_to_regs(vm_t *vm) {
+  switch (vm->buf[vm->ip]) {
     case VM_INSN_MOVB_IMM8_TO_R0:
       vm_insn_movb_imm8_to_r0(vm);
       break;
@@ -107,8 +105,11 @@ void vm_run(vm_t *vm) {
     case VM_INSN_MOVB_IMM8_TO_R3:
       vm_insn_movb_imm8_to_r3(vm);
       break;
-    // move general-purpose register value as
-    // byte value to 'r0' general-purpose register.
+  }
+}
+
+static void vm_movb_regs_to_r0(vm_t *vm) {
+  switch (vm->buf[vm->ip]) {
     case VM_INSN_MOVB_R0_TO_R0:
       vm_insn_movb_r0_to_r0(vm);
       break;
@@ -121,8 +122,11 @@ void vm_run(vm_t *vm) {
     case VM_INSN_MOVB_R3_TO_R0:
       vm_insn_movb_r3_to_r0(vm);
       break;
-    // move general-purpose register value as
-    // byte value to 'r1' general-purpose register.
+  }
+}
+
+static void vm_movb_regs_to_r1(vm_t *vm) {
+  switch (vm->buf[vm->ip]) {
     case VM_INSN_MOVB_R0_TO_R1:
       vm_insn_movb_r0_to_r1(vm);
       break;
@@ -135,8 +139,11 @@ void vm_run(vm_t *vm) {
     case VM_INSN_MOVB_R3_TO_R1:
       vm_insn_movb_r3_to_r1(vm);
       break;
-    // move general-purpose register value as
-    // byte value to 'r2' general-purpose register.
+  }
+}
+
+static void vm_movb_regs_to_r2(vm_t *vm) {
+  switch (vm->buf[vm->ip]) {
     case VM_INSN_MOVB_R0_TO_R2:
       vm_insn_movb_r0_to_r2(vm);
       break;
@@ -149,8 +156,11 @@ void vm_run(vm_t *vm) {
     case VM_INSN_MOVB_R3_TO_R2:
       vm_insn_movb_r3_to_r2(vm);
       break;
-    // move general-purpose register value as
-    // byte value to 'r3' general-purpose register.
+  }
+}
+
+static void vm_movb_regs_to_r3(vm_t *vm) {
+  switch (vm->buf[vm->ip]) {
     case VM_INSN_MOVB_R0_TO_R3:
       vm_insn_movb_r0_to_r3(vm);
       break;
@@ -163,8 +173,11 @@ void vm_run(vm_t *vm) {
     case VM_INSN_MOVB_R3_TO_R3:
       vm_insn_movb_r3_to_r3(vm);
       break;
-    // add imm8, imm8 and store its result to
-    // general-purpose register
+  }
+}
+
+static void vm_addb_imm8_imm8_to_regs(vm_t *vm) {
+  switch (vm->buf[vm->ip]) {
     case VM_INSN_ADDB_IMM8_IMM8_TO_R0:
       vm_insn_addb_imm8_imm8_to_r0(vm);
       break;
@@ -177,8 +190,11 @@ void vm_run(vm_t *vm) {
     case VM_INSN_ADDB_IMM8_IMM8_TO_R3:
       vm_insn_addb_imm8_imm8_to_r3(vm);
       break;
-    // subtract imm8, imm8 and store its result to
-    // general-purpose register
+  }
+}
+
+static void vm_subb_imm8_imm8_to_regs(vm_t *vm) {
+  switch (vm->buf[vm->ip]) {
     case VM_INSN_SUBB_IMM8_IMM8_TO_R0:
       vm_insn_subb_imm8_imm8_to_r0(vm);
       break;
@@ -191,8 +207,11 @@ void vm_run(vm_t *vm) {
     case VM_INSN_SUBB_IMM8_IMM8_TO_R3:
       vm_insn_subb_imm8_imm8_to_r3(vm);
       break;
-    // multiply imm8, imm8 and store its result to
-    // general-purpose register.
+  }
+}
+
+static void vm_mulb_imm8_imm8_to_regs(vm_t *vm) {
+  switch (vm->buf[vm->ip]) {
     case VM_INSN_MULB_IMM8_IMM8_TO_R0:
       vm_insn_mulb_imm8_imm8_to_r0(vm);
       break;
@@ -205,8 +224,11 @@ void vm_run(vm_t *vm) {
     case VM_INSN_MULB_IMM8_IMM8_TO_R3:
       vm_insn_mulb_imm8_imm8_to_r3(vm);
       break;
-    // divide imm8, imm8 and store its result to
-    // general-purpose register.
+  }
+}
+
+static void vm_divb_imm8_imm8_to_regs(vm_t *vm) {
+  switch (vm->buf[vm->ip]) {
     case VM_INSN_DIVB_IMM8_IMM8_TO_R0:
       vm_insn_divb_imm8_imm8_to_r0(vm);
       break;
@@ -219,8 +241,11 @@ void vm_run(vm_t *vm) {
     case VM_INSN_DIVB_IMM8_IMM8_TO_R3:
       vm_insn_divb_imm8_imm8_to_r3(vm);
       break;
-    // add imm8, r0 and store its result to
-    // general-purpose register.
+  }
+}
+
+static void vm_addb_imm8_r0_to_regs(vm_t *vm) {
+  switch (vm->buf[vm->ip]) {
     case VM_INSN_ADDB_IMM8_R0_TO_R0:
       vm_insn_addb_imm8_r0_to_r0(vm);
       break;
@@ -233,8 +258,11 @@ void vm_run(vm_t *vm) {
     case VM_INSN_ADDB_IMM8_R0_TO_R3:
       vm_insn_addb_imm8_r0_to_r3(vm);
       break;
-    // subtract imm8, r0 and store its result to
-    // general-purpose register.
+  }
+}
+
+static void vm_subb_imm8_r0_to_regs(vm_t *vm) {
+  switch (vm->buf[vm->ip]) {
     case VM_INSN_SUBB_IMM8_R0_TO_R0:
       vm_insn_subb_imm8_r0_to_r0(vm);
       break;
@@ -247,8 +275,11 @@ void vm_run(vm_t *vm) {
     case VM_INSN_SUBB_IMM8_R0_TO_R3:
       vm_insn_subb_imm8_r0_to_r3(vm);
       break;
-    // multiply imm8, r0 and store its result to
-    // general-purpose register.
+  }
+}
+
+static void vm_mulb_imm8_r0_to_regs(vm_t *vm) {
+  switch (vm->buf[vm->ip]) {
     case VM_INSN_MULB_IMM8_R0_TO_R0:
       vm_insn_mulb_imm8_r0_to_r0(vm);
       break;
@@ -261,8 +292,11 @@ void vm_run(vm_t *vm) {
     case VM_INSN_MULB_IMM8_R0_TO_R3:
       vm_insn_mulb_imm8_r0_to_r3(vm);
       break;
-    // divide imm8, r0 and store its result to
-    // general-purpose register.
+  }
+}
+
+static void vm_divb_imm8_r0_to_regs(vm_t *vm) {
+  switch (vm->buf[vm->ip]) {
     case VM_INSN_DIVB_IMM8_R0_TO_R0:
       vm_insn_divb_imm8_r0_to_r0(vm);
       break;
@@ -275,8 +309,11 @@ void vm_run(vm_t *vm) {
     case VM_INSN_DIVB_IMM8_R0_TO_R3:
       vm_insn_divb_imm8_r0_to_r3(vm);
       break;
-    // add imm8, r1 and store its result to
-    // general-purpose register.
+  }
+}
+
+static void vm_addb_imm8_r1_to_regs(vm_t *vm) {
+  switch (vm->buf[vm->ip]) {
     case VM_INSN_ADDB_IMM8_R1_TO_R0:
       vm_insn_addb_imm8_r1_to_r0(vm);
       break;
@@ -289,8 +326,11 @@ void vm_run(vm_t *vm) {
     case VM_INSN_ADDB_IMM8_R1_TO_R3:
       vm_insn_addb_imm8_r1_to_r3(vm);
       break;
-    // subtract imm8, r1 and store its result to
-    // general-purpose register.
+  }
+}
+
+static void vm_subb_imm8_r1_to_regs(vm_t *vm) {
+  switch (vm->buf[vm->ip]) {
     case VM_INSN_SUBB_IMM8_R1_TO_R0:
       vm_insn_subb_imm8_r1_to_r0(vm);
       break;
@@ -303,8 +343,11 @@ void vm_run(vm_t *vm) {
     case VM_INSN_SUBB_IMM8_R1_TO_R3:
       vm_insn_subb_imm8_r1_to_r3(vm);
       break;
-    // multiply imm8, r1 and store its result to
-    // general-purpose register.
+  }
+}
+
+static void vm_mulb_imm8_r1_to_regs(vm_t *vm) {
+  switch (vm->buf[vm->ip]) {
     case VM_INSN_MULB_IMM8_R1_TO_R0:
       vm_insn_mulb_imm8_r1_to_r0(vm);
       break;
@@ -317,12 +360,28 @@ void vm_run(vm_t *vm) {
     case VM_INSN_MULB_IMM8_R1_TO_R3:
       vm_insn_mulb_imm8_r1_to_r3(vm);
       break;
-    // print immediate 8-bit integer value.
-    case VM_INSN_PRINT_IMM8:
-      vm_insn_print_imm8(vm);
+  }
+}
+
+static void vm_divb_imm8_r1_to_regs(vm_t *vm) {
+  switch (vm->buf[vm->ip]) {
+    case VM_INSN_DIVB_IMM8_R1_TO_R0:
+      vm_insn_divb_imm8_r1_to_r0(vm);
       break;
-    // print integer value from associated
-    // general-purpose register.
+    case VM_INSN_DIVB_IMM8_R1_TO_R1:
+      vm_insn_divb_imm8_r1_to_r1(vm);
+      break;
+    case VM_INSN_DIVB_IMM8_R1_TO_R2:
+      vm_insn_divb_imm8_r1_to_r2(vm);
+      break;
+    case VM_INSN_DIVB_IMM8_R1_TO_R3:
+      vm_insn_divb_imm8_r1_to_r3(vm);
+      break;
+  }
+}
+
+static void vm_print_regs(vm_t *vm) {
+  switch (vm->buf[vm->ip]) {
     case VM_INSN_PRINT_R0:
       vm_insn_print_r0(vm);
       break;
@@ -334,6 +393,159 @@ void vm_run(vm_t *vm) {
       break;
     case VM_INSN_PRINT_R3:
       vm_insn_print_r3(vm);
+      break;
+  }
+}
+
+void vm_run(vm_t *vm) {
+  while (vm->buf[++vm->ip] && !vm->is_error) {
+    switch (vm->buf[vm->ip]) {
+    // move imm8 to general-purpose register.
+    case VM_INSN_MOVB_IMM8_TO_R0:
+    case VM_INSN_MOVB_IMM8_TO_R1:
+    case VM_INSN_MOVB_IMM8_TO_R2:
+    case VM_INSN_MOVB_IMM8_TO_R3:
+      vm_movb_imm8_to_regs(vm);
+      break;
+    // move general-purpose register value as
+    // byte value to 'r0' general-purpose register.
+    case VM_INSN_MOVB_R0_TO_R0:
+    case VM_INSN_MOVB_R1_TO_R0:
+    case VM_INSN_MOVB_R2_TO_R0:
+    case VM_INSN_MOVB_R3_TO_R0:
+      vm_movb_regs_to_r0(vm);
+      break;
+    // move general-purpose register value as
+    // byte value to 'r1' general-purpose register.
+    case VM_INSN_MOVB_R0_TO_R1:
+    case VM_INSN_MOVB_R1_TO_R1:
+    case VM_INSN_MOVB_R2_TO_R1:
+    case VM_INSN_MOVB_R3_TO_R1:
+      vm_movb_regs_to_r1(vm);
+      break;
+    // move general-purpose register value as
+    // byte value to 'r2' general-purpose register.
+    case VM_INSN_MOVB_R0_TO_R2:
+    case VM_INSN_MOVB_R1_TO_R2:
+    case VM_INSN_MOVB_R2_TO_R2:
+    case VM_INSN_MOVB_R3_TO_R2:
+      vm_movb_regs_to_r2(vm);
+      break;
+    // move general-purpose register value as
+    // byte value to 'r3' general-purpose register.
+    case VM_INSN_MOVB_R0_TO_R3:
+    case VM_INSN_MOVB_R1_TO_R3:
+    case VM_INSN_MOVB_R2_TO_R3:
+    case VM_INSN_MOVB_R3_TO_R3:
+      vm_movb_regs_to_r3(vm);
+      break;
+    // add imm8, imm8 and store its result to
+    // general-purpose register
+    case VM_INSN_ADDB_IMM8_IMM8_TO_R0:
+    case VM_INSN_ADDB_IMM8_IMM8_TO_R1:
+    case VM_INSN_ADDB_IMM8_IMM8_TO_R2:
+    case VM_INSN_ADDB_IMM8_IMM8_TO_R3:
+      vm_addb_imm8_imm8_to_regs(vm);
+      break;
+    // subtract imm8, imm8 and store its result to
+    // general-purpose register
+    case VM_INSN_SUBB_IMM8_IMM8_TO_R0:
+    case VM_INSN_SUBB_IMM8_IMM8_TO_R1:
+    case VM_INSN_SUBB_IMM8_IMM8_TO_R2:
+    case VM_INSN_SUBB_IMM8_IMM8_TO_R3:
+      vm_subb_imm8_imm8_to_regs(vm);
+      break;
+    // multiply imm8, imm8 and store its result to
+    // general-purpose register.
+    case VM_INSN_MULB_IMM8_IMM8_TO_R0:
+    case VM_INSN_MULB_IMM8_IMM8_TO_R1:
+    case VM_INSN_MULB_IMM8_IMM8_TO_R2:
+    case VM_INSN_MULB_IMM8_IMM8_TO_R3:
+      vm_mulb_imm8_imm8_to_regs(vm);
+      break;
+    // divide imm8, imm8 and store its result to
+    // general-purpose register.
+    case VM_INSN_DIVB_IMM8_IMM8_TO_R0:
+    case VM_INSN_DIVB_IMM8_IMM8_TO_R1:
+    case VM_INSN_DIVB_IMM8_IMM8_TO_R2:
+    case VM_INSN_DIVB_IMM8_IMM8_TO_R3:
+      vm_divb_imm8_imm8_to_regs(vm);
+      break;
+    // add imm8, r0 and store its result to
+    // general-purpose register.
+    case VM_INSN_ADDB_IMM8_R0_TO_R0:
+    case VM_INSN_ADDB_IMM8_R0_TO_R1:
+    case VM_INSN_ADDB_IMM8_R0_TO_R2:
+    case VM_INSN_ADDB_IMM8_R0_TO_R3:
+      vm_addb_imm8_r0_to_regs(vm);
+      break;
+    // subtract imm8, r0 and store its result to
+    // general-purpose register.
+    case VM_INSN_SUBB_IMM8_R0_TO_R0:
+    case VM_INSN_SUBB_IMM8_R0_TO_R1:
+    case VM_INSN_SUBB_IMM8_R0_TO_R2:
+    case VM_INSN_SUBB_IMM8_R0_TO_R3:
+      vm_subb_imm8_r0_to_regs(vm);
+      break;
+    // multiply imm8, r0 and store its result to
+    // general-purpose register.
+    case VM_INSN_MULB_IMM8_R0_TO_R0:
+    case VM_INSN_MULB_IMM8_R0_TO_R1:
+    case VM_INSN_MULB_IMM8_R0_TO_R2:
+    case VM_INSN_MULB_IMM8_R0_TO_R3:
+      vm_mulb_imm8_r0_to_regs(vm);
+      break;
+    // divide imm8, r0 and store its result to
+    // general-purpose register.
+    case VM_INSN_DIVB_IMM8_R0_TO_R0:
+    case VM_INSN_DIVB_IMM8_R0_TO_R1:
+    case VM_INSN_DIVB_IMM8_R0_TO_R2:
+    case VM_INSN_DIVB_IMM8_R0_TO_R3:
+      vm_divb_imm8_r0_to_regs(vm);
+      break;
+    // add imm8, r1 and store its result to
+    // general-purpose register.
+    case VM_INSN_ADDB_IMM8_R1_TO_R0:
+    case VM_INSN_ADDB_IMM8_R1_TO_R1:
+    case VM_INSN_ADDB_IMM8_R1_TO_R2:
+    case VM_INSN_ADDB_IMM8_R1_TO_R3:
+      vm_addb_imm8_r1_to_regs(vm);
+      break;
+    // subtract imm8, r1 and store its result to
+    // general-purpose register.
+    case VM_INSN_SUBB_IMM8_R1_TO_R0:
+    case VM_INSN_SUBB_IMM8_R1_TO_R1:
+    case VM_INSN_SUBB_IMM8_R1_TO_R2:
+    case VM_INSN_SUBB_IMM8_R1_TO_R3:
+      vm_subb_imm8_r1_to_regs(vm);
+      break;
+    // multiply imm8, r1 and store its result to
+    // general-purpose register.
+    case VM_INSN_MULB_IMM8_R1_TO_R0:
+    case VM_INSN_MULB_IMM8_R1_TO_R1:
+    case VM_INSN_MULB_IMM8_R1_TO_R2:
+    case VM_INSN_MULB_IMM8_R1_TO_R3:
+      vm_mulb_imm8_r1_to_regs(vm);
+      break;
+    // divide imm8, r1 and store its result to
+    // general-purpose register.
+    case VM_INSN_DIVB_IMM8_R1_TO_R0:
+    case VM_INSN_DIVB_IMM8_R1_TO_R1:
+    case VM_INSN_DIVB_IMM8_R1_TO_R2:
+    case VM_INSN_DIVB_IMM8_R1_TO_R3:
+      vm_divb_imm8_r1_to_regs(vm);
+      break;
+    // print immediate 8-bit integer value.
+    case VM_INSN_PRINT_IMM8:
+      vm_insn_print_imm8(vm);
+      break;
+    // print integer value from associated
+    // general-purpose register.
+    case VM_INSN_PRINT_R0:
+    case VM_INSN_PRINT_R1:
+    case VM_INSN_PRINT_R2:
+    case VM_INSN_PRINT_R3:
+      vm_print_regs(vm);
       break;
     // invalid opcode handler.
     default:
