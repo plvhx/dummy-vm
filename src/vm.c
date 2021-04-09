@@ -414,6 +414,23 @@ static void vm_subb_imm8_r2_to_regs(vm_t *vm) {
   }
 }
 
+static void vm_mulb_imm8_r2_to_regs(vm_t *vm) {
+  switch (vm->buf[vm->ip]) {
+  case VM_INSN_MULB_IMM8_R2_TO_R0:
+    vm_insn_mulb_imm8_r2_to_r0(vm);
+    break;
+  case VM_INSN_MULB_IMM8_R2_TO_R1:
+    vm_insn_mulb_imm8_r2_to_r1(vm);
+    break;
+  case VM_INSN_MULB_IMM8_R2_TO_R2:
+    vm_insn_mulb_imm8_r2_to_r2(vm);
+    break;
+  case VM_INSN_MULB_IMM8_R2_TO_R3:
+    vm_insn_mulb_imm8_r2_to_r3(vm);
+    break;
+  }
+}
+
 static void vm_print_regs(vm_t *vm) {
   switch (vm->buf[vm->ip]) {
   case VM_INSN_PRINT_R0:
@@ -584,6 +601,14 @@ void vm_run(vm_t *vm) {
     case VM_INSN_SUBB_IMM8_R2_TO_R2:
     case VM_INSN_SUBB_IMM8_R2_TO_R3:
       vm_subb_imm8_r2_to_regs(vm);
+      break;
+    // multiply imm8, r2 and store its result to
+    // general-purpose register.
+    case VM_INSN_MULB_IMM8_R2_TO_R0:
+    case VM_INSN_MULB_IMM8_R2_TO_R1:
+    case VM_INSN_MULB_IMM8_R2_TO_R2:
+    case VM_INSN_MULB_IMM8_R2_TO_R3:
+      vm_mulb_imm8_r2_to_regs(vm);
       break;
     // print immediate 8-bit integer value.
     case VM_INSN_PRINT_IMM8:
