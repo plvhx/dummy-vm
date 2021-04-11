@@ -148,6 +148,13 @@ static void test_divb_imm8_r2_to_regs(void) {
   test_divb_imm8_r2_to_r3();
 }
 
+static void test_addb_imm8_r3_to_regs(void) {
+  test_addb_imm8_r3_to_r0();
+  test_addb_imm8_r3_to_r1();
+  test_addb_imm8_r3_to_r2();
+  test_addb_imm8_r3_to_r3();
+}
+
 int main(void) {
   test_movb_imm8_to_regs();
 
@@ -175,6 +182,8 @@ int main(void) {
   test_subb_imm8_r2_to_regs();
   test_mulb_imm8_r2_to_regs();
   test_divb_imm8_r2_to_regs();
+
+  test_addb_imm8_r3_to_regs();
 
   printf("All tests passed.\n");
   return 0;
