@@ -4,6 +4,7 @@ YACC = bison
 MV = mv
 
 SRCDIR = ./src
+TESTAST_DIR = ./test-ast
 TESTVM_DIR = ./test-vm
 
 LEXER_OBJ_DEPS = \
@@ -22,6 +23,13 @@ RUNNER_OBJS = \
 	$(SRCDIR)/vm.o
 
 DISPATCHER_OBJS = $(RUNNER_OBJS) dispatcher.o
+
+TESTAST_OBJS = \
+	$(SRCDIR)/ast.o \
+	$(TESTAST_DIR)/ast_movb_imm8_to_r0.o \
+	$(TESTAST_DIR)/ast_movb_imm8_to_r1.o \
+	$(TESTAST_DIR)/ast_movb_imm8_to_r2.o \
+	$(TESTAST_DIR)/main.o
 
 TESTVM_OBJS = \
 	$(RUNNER_OBJS) \
@@ -123,8 +131,23 @@ compiler: $(COMPILER_OBJS)
 dispatcher: $(DISPATCHER_OBJS)
 	$(CC) -o dispatcher $(DISPATCHER_OBJS)
 
+test-ast: $(TESTAST_OBJS)
+	$(CC) -o $(TESTAST_DIR)/test-ast $(TESTAST_OBJS)
+
 test-vm: $(TESTVM_OBJS)
-	$(CC) -o $(TESTVM_DIR)/test_vm $(TESTVM_OBJS)
+	$(CC) -o $(TESTVM_DIR)/test-vm $(TESTVM_OBJS)
+
+$(TESTAST_DIR)/ast_movb_imm8_to_r0.o: $(TESTAST_DIR)/ast_movb_imm8_to_r0.c
+	$(CC) -c $< -o $@
+
+$(TESTAST_DIR)/ast_movb_imm8_to_r1.o: $(TESTAST_DIR)/ast_movb_imm8_to_r1.c
+	$(CC) -c $< -o $@
+
+$(TESTAST_DIR)/ast_movb_imm8_to_r2.o: $(TESTAST_DIR)/ast_movb_imm8_to_r2.c
+	$(CC) -c $< -o $@
+
+$(TESTAST_DIR)/main.o: $(TESTAST_DIR)/main.c
+	$(CC) -c $< -o $@
 
 $(TESTVM_DIR)/movb_imm8_to_r0.o: $(TESTVM_DIR)/movb_imm8_to_r0.c
 	$(CC) -c $< -o $@
@@ -390,6 +413,9 @@ $(TESTVM_DIR)/addb_imm8_r3_to_r2.o: $(TESTVM_DIR)/addb_imm8_r3_to_r2.c
 $(TESTVM_DIR)/addb_imm8_r3_to_r3.o: $(TESTVM_DIR)/addb_imm8_r3_to_r3.c
 	$(CC) -c $< -o $@
 
+$(TESTVM_DIR)/main.o: $(TESTVM_DIR)/main.c
+	$(CC) -c $< -o $@
+
 $(SRCDIR)/ast.o: $(SRCDIR)/ast.c
 	$(CC) -c $< -o $@
 
@@ -426,8 +452,10 @@ clean:
 		$(SRCDIR)/vm_langspec_parser.tab.c \
 		$(SRCDIR)/vm_langspec_parser.tab.h
 	rm -f $(SRCDIR)/*.o
+	rm -f $(TESTAST_DIR)/*.o
+	rm -f $(TESTAST_DIR)/test-ast
 	rm -f $(TESTVM_DIR)/*.o
-	rm -f $(TESTVM_DIR)/test_vm
+	rm -f $(TESTVM_DIR)/test-vm
 	rm -f compiler.o
 	rm -f compiler
 	rm -f dispatcher.o

@@ -798,3 +798,15 @@ void vm_ast_traverse(vm_ast_t *ast, FILE *file,
     vm_ast_traverse(ast->childs[i], file, visitor);
   }
 }
+
+void vm_ast_dtor(vm_ast_t *ast) {
+  if (ast == NULL) {
+    return;
+  }
+
+  for (int i = 0; i < ast->num_childs; i++) {
+    vm_ast_dtor(ast->childs[i]);
+  }
+
+  free(ast);
+}

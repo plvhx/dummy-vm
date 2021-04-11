@@ -82,6 +82,7 @@ vm_ast_t *vm_ast_create_multi_ex(unsigned short kind_type,
 vm_ast_t *vm_ast_add_child(vm_ast_t *ast, vm_ast_t *child);
 void vm_ast_traverse(vm_ast_t *ast, FILE *file,
                      void (*visitor)(FILE *file, int opcode));
+void vm_ast_dtor(vm_ast_t *ast);
 
 #ifdef __cplusplus
 }
